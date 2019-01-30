@@ -1,0 +1,7 @@
+<Project>
+	<PropertyGroup>
+		<AssemblyName>Sample-application</AssemblyName>
+		<CodeAnalysisRuleSet>CodeAnalysis\Rules.ruleset</CodeAnalysisRuleSet>
+		<RootNamespace>SampleApplication</RootNamespace>
+	</PropertyGroup>
+</Project>
