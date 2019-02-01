@@ -4,20 +4,20 @@ Additions and extensions for ASP.NET.
 
 [![NuGet](https://img.shields.io/nuget/v/RegionOrebroLan.Web.svg?label=NuGet)](https://www.nuget.org/packages/RegionOrebroLan.Web)
 
-## 1. Paging/Pagination
+## 1 Paging/Pagination
 
-### Source
+### 1.1 Source
 - [RegionOrebroLan.Web.Paging.IPagination](/Source/Project/Paging/IPagination.cs)
 - [RegionOrebroLan.Web.Paging.Pagination](/Source/Project/Paging/Pagination.cs)
 - [RegionOrebroLan.Web.Paging.IPaginationFactory](/Source/Project/Paging/IPaginationFactory.cs)
 - [RegionOrebroLan.Web.Paging.PaginationFactory](/Source/Project/Paging/PaginationFactory.cs)
 
-### Example
+### 1.2 Example
 - [SampleApplication.Controllers.ListController](/Source/Sample-application/Controllers/ListController.cs)
 - [SampleApplication/Views/List/Index.cshtml](/Source/Sample-application/Views/List/Index.cshtml)
 - [SampleApplication/Views/Shared/Pagination.cshtml](/Source/Sample-application/Views/Shared/Pagination.cshtml)
 
-### Pagination.cshtml
+### 1.3 Pagination.cshtml
 
     @model IPagination
     @if(Model != null && Model.Pages.Any())
