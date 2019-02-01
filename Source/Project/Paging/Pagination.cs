@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Globalization;
-using System.Linq;
 using System.Web;
+using RegionOrebroLan.Web.Paging.Extensions;
 
 namespace RegionOrebroLan.Web.Paging
 {
@@ -306,7 +306,8 @@ namespace RegionOrebroLan.Web.Paging
 			}
 		}
 
-		public virtual IPage SelectedPage => this.Pages.FirstOrDefault(page => page.Selected);
+		[Obsolete("This property will be removed. Use RegionOrebroLan.Web.Paging.Extensions.PaginationExtension.SelectedPage(this IPagination pagination) instead.", true)]
+		public virtual IPage SelectedPage => this.SelectedPage();
 
 		public virtual int Skip
 		{

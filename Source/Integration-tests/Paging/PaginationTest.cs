@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RegionOrebroLan.Web.Paging;
+using RegionOrebroLan.Web.Paging.Extensions;
 
 namespace RegionOrebroLan.Web.IntegrationTests.Paging
 {
@@ -141,6 +142,13 @@ namespace RegionOrebroLan.Web.IntegrationTests.Paging
 
 			pagination = new Pagination(10, 1000, this.PageIndexKey, 10, this.CreateUrl(35), this.Validator, true);
 			Assert.AreEqual(new Uri("http://localhost/?PageIndex=29"), pagination.PreviousPageGroupUrl);
+		}
+
+		[TestMethod]
+		public void SelectedPage_Test()
+		{
+			var pagination = new Pagination(10, 1000, this.PageIndexKey, 10, this.DefaultUrl, this.Validator, false);
+			Assert.AreEqual(1, pagination.SelectedPage().Index);
 		}
 
 		[TestMethod]

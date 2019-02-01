@@ -14,7 +14,10 @@ namespace RegionOrebroLan.Web.Paging
 		IEnumerable<IPage> Pages { get; }
 		Uri PreviousPageGroupUrl { get; }
 		Uri PreviousPageUrl { get; }
+
+		[Obsolete("This property will be removed. Use RegionOrebroLan.Web.Paging.Extensions.PaginationExtension.SelectedPage(this IPagination pagination) instead.", true)]
 		IPage SelectedPage { get; }
+
 		int Skip { get; }
 		int Take { get; }
 		int TotalNumberOfPages { get; }
