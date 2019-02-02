@@ -1,7 +1,7 @@
 ﻿@model PaginationSettingsForm;
 @if(Model != null)
 {
-	<form asp-controller="List" asp-action="Index" method="get">
+	<form asp-action="Index" asp-controller="List" method="get">
 		<div class="form-group">
 			<label asp-for="NumberOfItems"></label>
 			<input asp-for="NumberOfItems" class="form-control" min="0" />
