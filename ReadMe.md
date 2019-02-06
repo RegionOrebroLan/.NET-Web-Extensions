@@ -1,6 +1,6 @@
 # .NET-Web-Extensions
 
-Additions and extensions for ASP.NET.
+Additions and extensions for .NET web-applications, ASP.NET and ASP.NET Core.
 
 [![NuGet](https://img.shields.io/nuget/v/RegionOrebroLan.Web.svg?label=NuGet)](https://www.nuget.org/packages/RegionOrebroLan.Web)
 

@@ -10,7 +10,7 @@
 		<AssemblyVersion>$(VersionPrefix).0</AssemblyVersion>
 		<CodeAnalysisRuleSet>CodeAnalysis\Rules.ruleset</CodeAnalysisRuleSet>
 		<DelaySign>false</DelaySign>
-		<Description>Additions and extensions for ASP.NET.</Description>
+		<Description>Additions and extensions for .NET web-applications, ASP.NET and ASP.NET Core.</Description>
 		<FileVersion>$(VersionPrefix).0</FileVersion>
 		<RootNamespace>$(AssemblyName)</RootNamespace>
 		<SignAssembly>true</SignAssembly>
