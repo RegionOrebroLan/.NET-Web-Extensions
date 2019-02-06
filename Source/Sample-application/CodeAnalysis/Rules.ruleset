@@ -9,4 +9,7 @@
 		<Rule Id="IDE0009" Action="None" />
 		<Rule Id="IDE0011" Action="None" />
 	</Rules>
+	<Rules AnalyzerId="Microsoft.CodeQuality.Analyzers" RuleNamespace="Microsoft.CodeQuality.Analyzers">
+		<Rule Id="CA2007" Action="None" />
+	</Rules>
 </RuleSet>

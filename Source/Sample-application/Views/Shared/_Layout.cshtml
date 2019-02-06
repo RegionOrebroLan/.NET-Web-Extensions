@@ -14,16 +14,19 @@
 				<div class="container">
 					<a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Sample-application</a>
 					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-					        aria-expanded="false" aria-label="Toggle navigation">
+							aria-expanded="false" aria-label="Toggle navigation">
 						<span class="navbar-toggler-icon"></span>
 					</button>
 					<div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
 						<ul class="navbar-nav flex-grow-1">
 							<li class="nav-item">
-								<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+								<a asp-controller="Home" asp-action="Index" class="nav-link text-dark">Home</a>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link text-dark" asp-area="" asp-controller="List" asp-action="Index">List</a>
+								<a asp-controller="List" asp-action="Index" class="nav-link text-dark">List</a>
+							</li>
+							<li class="nav-item">
+								<a asp-controller="Recaptcha" asp-action="Index" class="nav-link text-dark">Recaptcha</a>
 							</li>
 						</ul>
 					</div>
@@ -40,6 +43,29 @@
 		</footer>
 		<script src="~/Scripts/jquery.js"></script>
 		<script src="~/Scripts/popper.js"></script>
-		<script src="~/Scripts/bootstrap.js"></script>
+        <script src="~/Scripts/bootstrap.js"></script>
+        @if(Model.Layout.Settings.Recaptcha.Enabled)
+        {
+            <script src="@Model.Layout.Settings.Recaptcha.ScriptUrl"></script>
+            <script>
+                grecaptcha.ready(function () {
+                    $("form[data-recaptcha-enabled=\"true\"]").each(function () {
+                        var formComponentsSelector = "button, input, textarea";
+                        var form = $(this);
+                        var action = form.attr("action");
+                        console.log("Action: " + action);
+                        form.find(formComponentsSelector).each(function() {
+                            $(this).prop("disabled", true);
+                        });
+                        grecaptcha.execute("@Model.Layout.Settings.Recaptcha.SiteKey", { action: action }).then(function (token) {
+                            form.prepend("<input name=\"@Model.Layout.Settings.Recaptcha.TokenParameterName\" type=\"hidden\" value=\"" + token + "\" />");
+                            form.find(formComponentsSelector).each(function() {
+                                $(this).prop("disabled", false);
+                            });
+                        });
+                    });
+                });
+            </script>
+        }
 	</body>
 </html>

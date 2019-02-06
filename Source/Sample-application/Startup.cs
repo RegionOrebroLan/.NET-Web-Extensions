@@ -7,7 +7,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using RegionOrebroLan.ServiceLocation;
 using RegionOrebroLan.ServiceLocation.Extensions;
-using RegionOrebroLan.Web.Paging;
+using RegionOrebroLan.Web.Security.Captcha;
+using SampleApplication.Business.Web.Mvc.Filters;
 
 namespace SampleApplication
 {
@@ -49,14 +50,18 @@ namespace SampleApplication
 			if(services == null)
 				throw new ArgumentNullException(nameof(services));
 
-			var assembliesToScan = new[] {typeof(IPagination).Assembly};
+			services.AddSingleton<IRecaptchaSettings>(this.Configuration.GetSection(typeof(RecaptchaSettings).Name).Get<RecaptchaSettings>());
+
+			var assembliesToScan = new[] {typeof(RegionOrebroLan.IDateTimeContext).Assembly, typeof(RegionOrebroLan.Web.Paging.IPagination).Assembly, this.GetType().Assembly};
 
 			foreach(var mapping in new ServiceConfigurationScanner().Scan(assembliesToScan))
 			{
 				services.Add(new ServiceDescriptor(mapping.Configuration.ServiceType, mapping.Type, this.GetServiceLifetime(mapping)));
 			}
 
-			services.AddMvc();
+			services.AddHttpContextAccessor();
+
+			services.AddMvc(options => options.Filters.Add<ViewModelFilter>());
 		}
 
 		[SuppressMessage("Microsoft.Style", "IDE0010:Add missing cases")]
