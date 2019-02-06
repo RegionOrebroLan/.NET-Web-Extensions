@@ -36,10 +36,10 @@ namespace SampleApplication.Controllers
 			var model = new ListViewModel
 			{
 				Form = form,
-				Heading = "List",
-				Pagination = this.PaginationFactory.Create(form.MaximumNumberOfDisplayedPages, form.NumberOfItems, "PageIndex", form.PageSize, url, form.ZeroBasedIndex),
-				Title = "List"
+				Pagination = this.PaginationFactory.Create(form.MaximumNumberOfDisplayedPages, form.NumberOfItems, "PageIndex", form.PageSize, url, form.ZeroBasedIndex)
 			};
+
+            model.Heading = model.Title = "List";
 
 			for(var i = 0; i < form.NumberOfItems; i++)
 			{
