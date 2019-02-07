@@ -131,11 +131,11 @@ Additions and extensions for .NET web-applications, ASP.NET and ASP.NET Core.
 - [reCAPTCHA v3](https://developers.google.com/recaptcha/docs/v3/)
 - [reCAPTCHA demo](https://recaptcha-demo.appspot.com/)
 
-### 1.1 Source
+### 2.1 Source
 
 - [RegionOrebroLan.Web.Security.Captcha](/Source/Project/Security/Captcha/)
 
-### 1.2 Example
+### 2.2 Example
 
 - [SampleApplication.Business.Web.Mvc.Filters.ValidateRecaptchaTokenFilter](/Source/Sample-application/Business/Web/Mvc/Filters/ValidateRecaptchaTokenFilter.cs)
 - [SampleApplication.Business.Web.Mvc.ValidateRecaptchaTokenAttribute](/Source/Sample-application/Business/Web/Mvc/ValidateRecaptchaTokenAttribute.cs)
