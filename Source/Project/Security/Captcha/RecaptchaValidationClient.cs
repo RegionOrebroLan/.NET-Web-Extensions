@@ -52,12 +52,12 @@ namespace RegionOrebroLan.Web.Security.Captcha
 		{
 			using(var httpClient = new HttpClient())
 			{
-				var response = await httpClient.PostAsync(this.Settings.ValidationUrl, this.CreateValidationResultContent(ip, token));
+				var response = await httpClient.PostAsync(this.Settings.ValidationUrl, this.CreateValidationResultContent(ip, token)).ConfigureAwait(false);
 
 				// ReSharper disable InvertIf
 				if(response.IsSuccessStatusCode)
 				{
-					var content = await response.Content.ReadAsStringAsync();
+					var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 					return this.ParseValidationResult(content);
 				}
 				// ReSharper restore InvertIf

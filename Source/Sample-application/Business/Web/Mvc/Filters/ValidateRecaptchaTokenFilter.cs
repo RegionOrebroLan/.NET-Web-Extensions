@@ -91,9 +91,9 @@ namespace SampleApplication.Business.Web.Mvc.Filters
 		[SuppressMessage("Naming", "CA1716:Identifiers should not match keywords")]
 		public virtual async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
 		{
-			await this.ValidateTokenIfNecessaryAsync(context);
+			await this.ValidateTokenIfNecessaryAsync(context).ConfigureAwait(false);
 
-			await next();
+			await next().ConfigureAwait(false);
 		}
 
 		protected internal virtual async Task ValidateTokenIfNecessaryAsync(ActionExecutingContext context)
@@ -108,7 +108,7 @@ namespace SampleApplication.Business.Web.Mvc.Filters
 
 			try
 			{
-				await this.Validator.ValidateAsync(request);
+				await this.Validator.ValidateAsync(request).ConfigureAwait(false);
 			}
 			catch(Exception exception)
 			{

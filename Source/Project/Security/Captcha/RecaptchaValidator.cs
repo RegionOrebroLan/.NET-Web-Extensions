@@ -82,7 +82,7 @@ namespace RegionOrebroLan.Web.Security.Captcha
 
 			try
 			{
-				validationResult = await this.ValidationClient.GetValidationResultAsync(ip, request.Token);
+				validationResult = await this.ValidationClient.GetValidationResultAsync(ip, request.Token).ConfigureAwait(false);
 			}
 			catch(Exception exception)
 			{

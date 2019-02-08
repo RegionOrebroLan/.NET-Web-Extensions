@@ -28,7 +28,7 @@ namespace RegionOrebroLan.Web.Security.Captcha.Extensions
 			if(recaptchaValidationClient == null)
 				throw new ArgumentNullException(nameof(recaptchaValidationClient));
 
-			return await recaptchaValidationClient.GetValidationResultAsync(null, token);
+			return await recaptchaValidationClient.GetValidationResultAsync(null, token).ConfigureAwait(false);
 		}
 
 		#endregion

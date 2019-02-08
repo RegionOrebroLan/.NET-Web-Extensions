@@ -28,7 +28,7 @@ namespace RegionOrebroLan.Web.Security.Captcha.Extensions
 
 			try
 			{
-				await recaptchaValidator.ValidateAsync(request);
+				await recaptchaValidator.ValidateAsync(request).ConfigureAwait(false);
 
 				return new Tuple<bool, Exception>(true, null);
 			}
