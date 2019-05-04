@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace RegionOrebroLan.Web.Security.Captcha
 {
 	/// <inheritdoc />
+	[SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters")]
 	public class RecaptchaSettings : IRecaptchaSettings
 	{
 		#region Fields

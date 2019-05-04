@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace SampleApplication.Business.Extensions
 {
+	[SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters")]
 	public static class UriExtension
 	{
 		#region Methods

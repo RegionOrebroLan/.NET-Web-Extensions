@@ -28,6 +28,9 @@ namespace SampleApplication.Business.Web.Mvc.Filters
 
 		public virtual void OnActionExecuted(ActionExecutedContext context)
 		{
+			if(context == null)
+				throw new ArgumentNullException(nameof(context));
+
 			if(!(context.Controller is Controller controller))
 				return;
 

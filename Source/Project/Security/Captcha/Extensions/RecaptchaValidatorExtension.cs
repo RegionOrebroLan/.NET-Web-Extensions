@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 
 namespace RegionOrebroLan.Web.Security.Captcha.Extensions
 {
+	[SuppressMessage("Design", "CA1031:Do not catch general exception types")]
 	public static class RecaptchaValidatorExtension
 	{
 		#region Methods

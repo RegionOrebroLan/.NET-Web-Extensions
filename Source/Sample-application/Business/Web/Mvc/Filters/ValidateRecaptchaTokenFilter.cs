@@ -13,6 +13,7 @@ using RegionOrebroLan.Web.Security.Captcha.Extensions;
 namespace SampleApplication.Business.Web.Mvc.Filters
 {
 	[ServiceConfiguration(InstanceMode = InstanceMode.Singleton, ServiceType = typeof(ValidateRecaptchaTokenFilter))]
+	[SuppressMessage("Design", "CA1031:Do not catch general exception types")]
 	public class ValidateRecaptchaTokenFilter : IAsyncActionFilter
 	{
 		#region Fields
@@ -88,6 +89,7 @@ namespace SampleApplication.Business.Web.Mvc.Filters
 			return string.Join(" -> ", messages);
 		}
 
+		[SuppressMessage("Design", "CA1062:Validate arguments of public methods")]
 		[SuppressMessage("Naming", "CA1716:Identifiers should not match keywords")]
 		public virtual async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
 		{
