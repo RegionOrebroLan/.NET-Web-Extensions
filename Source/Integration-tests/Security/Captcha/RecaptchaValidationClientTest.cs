@@ -14,10 +14,11 @@ namespace RegionOrebroLan.Web.IntegrationTests.Security.Captcha
 			return new RecaptchaSettings
 			{
 				ClientScriptUrlFormat = Global.RecaptchaSettings.ClientScriptUrlFormat,
+				MaximumTimestampElapse = Global.RecaptchaSettings.MaximumTimestampElapse,
+				MinimumTimestampElapse = Global.RecaptchaSettings.MinimumTimestampElapse,
 				Mode = Global.RecaptchaSettings.Mode,
 				SecretKey = Global.RecaptchaSettings.SecretKey,
 				SiteKey = Global.RecaptchaSettings.SiteKey,
-				TimestampExpiration = Global.RecaptchaSettings.TimestampExpiration,
 				ValidationUrl = Global.RecaptchaSettings.ValidationUrl
 			};
 		}

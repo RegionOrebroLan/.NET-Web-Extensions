@@ -57,10 +57,13 @@ namespace RegionOrebroLan.Web.Security.Captcha
 			if(validationResult.Timestamp == null)
 				errors.Add("The timestamp is null.");
 
-			var now = this.DateTimeContext.UtcNow;
+			var timeElapsed = this.DateTimeContext.UtcNow - validationResult.Timestamp;
 
-			if(now - validationResult.Timestamp > this.Settings.TimestampExpiration)
-				errors.Add("The timestamp has expired.");
+			if(timeElapsed > this.Settings.MaximumTimestampElapse)
+				errors.Add("The timestamp has expired. Too much time elapsed.");
+
+			if(timeElapsed < this.Settings.MinimumTimestampElapse)
+				errors.Add("The timestamp is not valid. Not enough time elapsed.");
 
 			return errors;
 		}

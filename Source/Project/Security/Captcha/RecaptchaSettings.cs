@@ -26,11 +26,16 @@ namespace RegionOrebroLan.Web.Security.Captcha
 			}
 		}
 
+		public virtual TimeSpan MaximumTimestampElapse { get; set; } = TimeSpan.FromHours(4);
 		public virtual decimal MinimumScore { get; set; } = 0.1m;
+		public virtual TimeSpan MinimumTimestampElapse { get; set; } = TimeSpan.FromSeconds(1);
 		public virtual RecaptchaModes Mode { get; set; } = RecaptchaModes.EnabledOnClient | RecaptchaModes.EnabledOnServer;
 		public virtual string SecretKey { get; set; }
 		public virtual string SiteKey { get; set; }
+
+		[Obsolete("This property will be removed. It is a misunderstanding. Use MaximumTimestampElapse and MinimumTimestampElapse instead.")]
 		public virtual TimeSpan TimestampExpiration { get; set; } = TimeSpan.FromMinutes(1);
+
 		public virtual string TokenParameterName { get; set; } = "RecaptchaToken";
 		public virtual bool ValidateIp { get; set; } = true;
 
