@@ -1,7 +1,7 @@
-﻿@model RecaptchaForm;
+﻿@model RecaptchaForm
 @if(Model != null)
 {
-	<form asp-action="Post" asp-controller="Recaptcha" data-recaptcha-enabled="true">
+	<form asp-action="Post" asp-controller="Recaptcha" asp-fragment="example-form" asp-route-key="value" data-recaptcha-enabled="true">
 		<div class="form-group">
 			<label asp-for="Value"></label>
 			<input asp-for="Value" class="form-control" />

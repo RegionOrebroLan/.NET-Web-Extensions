@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -24,8 +25,9 @@ namespace SampleApplication.Business.Web.Mvc.Filters
 
 		#region Constructors
 
-		public ValidateRecaptchaTokenFilter(IModelMetadataProvider modelMetadataProvider, IRecaptchaRequestFactory requestFactory, IRecaptchaSettings settings, IRecaptchaValidator validator)
+		public ValidateRecaptchaTokenFilter(IRecaptchaClientActionResolver clientActionResolver, IModelMetadataProvider modelMetadataProvider, IRecaptchaRequestFactory requestFactory, IRecaptchaSettings settings, IRecaptchaValidator validator)
 		{
+			this.ClientActionResolver = clientActionResolver ?? throw new ArgumentNullException(nameof(clientActionResolver));
 			this.ModelMetadataProvider = modelMetadataProvider ?? throw new ArgumentNullException(nameof(modelMetadataProvider));
 			this.RequestFactory = requestFactory ?? throw new ArgumentNullException(nameof(requestFactory));
 			this.Settings = settings ?? throw new ArgumentNullException(nameof(settings));
@@ -36,6 +38,7 @@ namespace SampleApplication.Business.Web.Mvc.Filters
 
 		#region Properties
 
+		protected internal virtual IRecaptchaClientActionResolver ClientActionResolver { get; }
 		protected internal virtual string ModelErrorKey => _modelErrorKey;
 		protected internal virtual IModelMetadataProvider ModelMetadataProvider { get; }
 		protected internal virtual IRecaptchaRequestFactory RequestFactory { get; }
@@ -71,7 +74,7 @@ namespace SampleApplication.Business.Web.Mvc.Filters
 			if(context == null)
 				throw new ArgumentNullException(nameof(context));
 
-			return context.HttpContext.Request.Path;
+			return context.HttpContext.Features.Get<IHttpRequestFeature>().RawTarget;
 		}
 
 		protected internal virtual string GetExceptionMessage(Exception exception)
@@ -106,7 +109,9 @@ namespace SampleApplication.Business.Web.Mvc.Filters
 			if(!this.Settings.EnabledOnServer())
 				return;
 
-			var request = this.RequestFactory.Create(this.GetAction(context));
+			var action = this.ClientActionResolver.Resolve(this.GetAction(context));
+
+			var request = this.RequestFactory.Create(action);
 
 			try
 			{

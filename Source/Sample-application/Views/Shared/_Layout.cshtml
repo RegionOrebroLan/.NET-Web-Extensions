@@ -14,7 +14,7 @@
 				<div class="container">
 					<a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Sample-application</a>
 					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-							aria-expanded="false" aria-label="Toggle navigation">
+					        aria-expanded="false" aria-label="Toggle navigation">
 						<span class="navbar-toggler-icon"></span>
 					</button>
 					<div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
@@ -43,29 +43,42 @@
 		</footer>
 		<script src="~/Scripts/jquery.js"></script>
 		<script src="~/Scripts/popper.js"></script>
-        <script src="~/Scripts/bootstrap.js"></script>
-        @if(Model.Layout.Settings.Recaptcha.Enabled)
-        {
-            <script src="@Model.Layout.Settings.Recaptcha.ScriptUrl"></script>
-            <script>
-                grecaptcha.ready(function () {
-                    $("form[data-recaptcha-enabled=\"true\"]").each(function () {
-                        var formComponentsSelector = "button, input, textarea";
-                        var form = $(this);
-                        var action = form.attr("action");
-                        console.log("Action: " + action);
-                        form.find(formComponentsSelector).each(function() {
-                            $(this).prop("disabled", true);
-                        });
-                        grecaptcha.execute("@Model.Layout.Settings.Recaptcha.SiteKey", { action: action }).then(function (token) {
-                            form.prepend("<input name=\"@Model.Layout.Settings.Recaptcha.TokenParameterName\" type=\"hidden\" value=\"" + token + "\" />");
-                            form.find(formComponentsSelector).each(function() {
-                                $(this).prop("disabled", false);
-                            });
-                        });
-                    });
-                });
-            </script>
-        }
+		<script src="~/Scripts/bootstrap.js"></script>
+		@if(Model.Layout.Settings.Recaptcha.Enabled)
+		{
+			<script src="@Model.Layout.Settings.Recaptcha.ScriptUrl"></script>
+			<script>
+				grecaptcha.ready(function () {
+					$("form[data-recaptcha-enabled=\"true\"]").each(function () {
+						var formComponentsSelector = "button, input, textarea";
+						var form = $(this);
+
+						var anchorCharacter = "#";
+						var action = form.attr("action");
+						console.log("Form-action: " + action);
+						var actionParts = action.split(anchorCharacter);
+
+						if (actionParts.length > 1) {
+							actionParts.pop();
+							action = actionParts.join(anchorCharacter);
+							console.log("Form-action without anchor: " + action);
+						}
+
+						var recaptchaAction = action.replace(/[^a-zA-Z_]/g, "_").substring(0, 100); // Only A-Z, a-z and _ are supported and a maximum length of 100.
+						console.log("ReCaptcha-action: " + recaptchaAction);
+
+						form.find(formComponentsSelector).each(function() {
+							$(this).prop("disabled", true);
+						});
+						grecaptcha.execute("@Model.Layout.Settings.Recaptcha.SiteKey", { action: recaptchaAction }).then(function (token) {
+							form.prepend("<input name=\"@Model.Layout.Settings.Recaptcha.TokenParameterName\" type=\"hidden\" value=\"" + token + "\" />");
+							form.find(formComponentsSelector).each(function() {
+								$(this).prop("disabled", false);
+							});
+						});
+					});
+				});
+			</script>
+		}
 	</body>
 </html>
