@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Net;
 using Microsoft.AspNetCore.Http;
-using RegionOrebroLan.ServiceLocation;
+using RegionOrebroLan.DependencyInjection;
 using RegionOrebroLan.Web.Security.Captcha;
 
 namespace SampleApplication.Business.Web.Security.Captcha
 {
 	/// <inheritdoc />
-	[ServiceConfiguration(InstanceMode = InstanceMode.Singleton, ServiceType = typeof(IRecaptchaRequestFactory))]
+	[ServiceConfiguration(ServiceType = typeof(IRecaptchaRequestFactory))]
 	public class RecaptchaRequestFactory : IRecaptchaRequestFactory
 	{
 		#region Constructors

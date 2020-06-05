@@ -1,9 +1,9 @@
 ﻿using System.Text.RegularExpressions;
-using RegionOrebroLan.ServiceLocation;
+using RegionOrebroLan.DependencyInjection;
 
 namespace RegionOrebroLan.Web.Security.Captcha
 {
-	[ServiceConfiguration(InstanceMode = InstanceMode.Singleton, ServiceType = typeof(IRecaptchaClientActionResolver))]
+	[ServiceConfiguration(ServiceType = typeof(IRecaptchaClientActionResolver))]
 	public class RecaptchaClientActionResolver : IRecaptchaClientActionResolver
 	{
 		#region Fields

@@ -7,13 +7,13 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using RegionOrebroLan.ServiceLocation;
+using RegionOrebroLan.DependencyInjection;
 using RegionOrebroLan.Web.Security.Captcha;
 using RegionOrebroLan.Web.Security.Captcha.Extensions;
 
 namespace SampleApplication.Business.Web.Mvc.Filters
 {
-	[ServiceConfiguration(InstanceMode = InstanceMode.Singleton, ServiceType = typeof(ValidateRecaptchaTokenFilter))]
+	[ServiceConfiguration(ServiceType = typeof(ValidateRecaptchaTokenFilter))]
 	[SuppressMessage("Design", "CA1031:Do not catch general exception types")]
 	public class ValidateRecaptchaTokenFilter : IAsyncActionFilter
 	{

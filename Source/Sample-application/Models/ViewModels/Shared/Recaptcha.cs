@@ -1,12 +1,13 @@
 ﻿using System;
-using RegionOrebroLan.ServiceLocation;
+using Microsoft.Extensions.DependencyInjection;
+using RegionOrebroLan.DependencyInjection;
 using RegionOrebroLan.Web.Security.Captcha;
 using RegionOrebroLan.Web.Security.Captcha.Extensions;
 
 namespace SampleApplication.Models.ViewModels.Shared
 {
 	/// <inheritdoc />
-	[ServiceConfiguration(InstanceMode = InstanceMode.Request, ServiceType = typeof(IRecaptcha))]
+	[ServiceConfiguration(Lifetime = ServiceLifetime.Scoped, ServiceType = typeof(IRecaptcha))]
 	public class Recaptcha : IRecaptcha
 	{
 		#region Fields

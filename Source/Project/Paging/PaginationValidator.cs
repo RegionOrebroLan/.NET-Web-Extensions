@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-using RegionOrebroLan.ServiceLocation;
+using RegionOrebroLan.DependencyInjection;
 
 namespace RegionOrebroLan.Web.Paging
 {
-	[ServiceConfiguration(InstanceMode = InstanceMode.Singleton, ServiceType = typeof(IPaginationValidator))]
+	[ServiceConfiguration(ServiceType = typeof(IPaginationValidator))]
 	[SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters")]
 	public class PaginationValidator : IPaginationValidator
 	{
@@ -23,6 +23,7 @@ namespace RegionOrebroLan.Web.Paging
 				throw new ArgumentException("The number of items can not be less than 0.", nameof(numberOfItems));
 		}
 
+		[SuppressMessage("Maintainability", "CA1508:Avoid dead conditional code")]
 		public virtual void ValidatePageIndexKey(string pageIndexKey)
 		{
 			if(pageIndexKey == null)

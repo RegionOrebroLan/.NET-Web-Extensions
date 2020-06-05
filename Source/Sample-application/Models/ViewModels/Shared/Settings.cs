@@ -1,9 +1,10 @@
 ﻿using System;
-using RegionOrebroLan.ServiceLocation;
+using Microsoft.Extensions.DependencyInjection;
+using RegionOrebroLan.DependencyInjection;
 
 namespace SampleApplication.Models.ViewModels.Shared
 {
-	[ServiceConfiguration(InstanceMode = InstanceMode.Request, ServiceType = typeof(ISettings))]
+	[ServiceConfiguration(Lifetime = ServiceLifetime.Scoped, ServiceType = typeof(ISettings))]
 	public class Settings : ISettings
 	{
 		#region Constructors

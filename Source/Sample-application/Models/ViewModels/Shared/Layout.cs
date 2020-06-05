@@ -1,9 +1,10 @@
 ﻿using System;
-using RegionOrebroLan.ServiceLocation;
+using Microsoft.Extensions.DependencyInjection;
+using RegionOrebroLan.DependencyInjection;
 
 namespace SampleApplication.Models.ViewModels.Shared
 {
-	[ServiceConfiguration(InstanceMode = InstanceMode.Request, ServiceType = typeof(ILayout))]
+	[ServiceConfiguration(Lifetime = ServiceLifetime.Scoped, ServiceType = typeof(ILayout))]
 	public class Layout : ILayout
 	{
 		#region Constructors

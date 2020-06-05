@@ -1,9 +1,9 @@
 ﻿using System;
-using RegionOrebroLan.ServiceLocation;
+using RegionOrebroLan.DependencyInjection;
 
 namespace RegionOrebroLan.Web.Paging
 {
-	[ServiceConfiguration(InstanceMode = InstanceMode.Singleton, ServiceType = typeof(IPaginationFactory))]
+	[ServiceConfiguration(ServiceType = typeof(IPaginationFactory))]
 	public class PaginationFactory : IPaginationFactory
 	{
 		#region Constructors

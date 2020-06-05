@@ -4,12 +4,12 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using RegionOrebroLan.ServiceLocation;
+using RegionOrebroLan.DependencyInjection;
 using RegionOrebroLan.Web.Security.Captcha.Extensions;
 
 namespace RegionOrebroLan.Web.Security.Captcha
 {
-	[ServiceConfiguration(InstanceMode = InstanceMode.Singleton, ServiceType = typeof(IRecaptchaValidator))]
+	[ServiceConfiguration(ServiceType = typeof(IRecaptchaValidator))]
 	[SuppressMessage("Design", "CA1031:Do not catch general exception types")]
 	public class RecaptchaValidator : IRecaptchaValidator
 	{

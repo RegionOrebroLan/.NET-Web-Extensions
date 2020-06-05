@@ -5,11 +5,11 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using RegionOrebroLan.ServiceLocation;
+using RegionOrebroLan.DependencyInjection;
 
 namespace RegionOrebroLan.Web.Security.Captcha
 {
-	[ServiceConfiguration(InstanceMode = InstanceMode.Singleton, ServiceType = typeof(IRecaptchaValidationClient))]
+	[ServiceConfiguration(ServiceType = typeof(IRecaptchaValidationClient))]
 	public class RecaptchaValidationClient : IRecaptchaValidationClient
 	{
 		#region Constructors

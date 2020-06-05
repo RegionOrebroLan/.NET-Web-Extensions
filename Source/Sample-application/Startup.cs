@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using RegionOrebroLan.ServiceLocation;
-using RegionOrebroLan.ServiceLocation.Extensions;
+using RegionOrebroLan.DependencyInjection;
+using RegionOrebroLan.DependencyInjection.Extensions;
 using RegionOrebroLan.Web.Security.Captcha;
 using SampleApplication.Business.Web.Mvc.Filters;
 
@@ -16,10 +15,10 @@ namespace SampleApplication
 	{
 		#region Constructors
 
-		public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment, ILoggerFactory loggerFactory)
+		public Startup(IConfiguration configuration, IHostEnvironment hostEnvironment, ILoggerFactory loggerFactory)
 		{
 			this.Configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-			this.HostingEnvironment = hostingEnvironment ?? throw new ArgumentNullException(nameof(hostingEnvironment));
+			this.HostEnvironment = hostEnvironment ?? throw new ArgumentNullException(nameof(hostEnvironment));
 			this.LoggerFactory = loggerFactory ?? throw new ArgumentNullException(nameof(loggerFactory));
 		}
 
@@ -28,7 +27,7 @@ namespace SampleApplication
 		#region Properties
 
 		protected internal virtual IConfiguration Configuration { get; }
-		protected internal virtual IHostingEnvironment HostingEnvironment { get; }
+		protected internal virtual IHostEnvironment HostEnvironment { get; }
 		protected internal virtual ILoggerFactory LoggerFactory { get; }
 
 		#endregion
@@ -42,7 +41,8 @@ namespace SampleApplication
 
 			applicationBuilder.UseDeveloperExceptionPage();
 			applicationBuilder.UseStaticFiles();
-			applicationBuilder.UseMvcWithDefaultRoute();
+			applicationBuilder.UseRouting();
+			applicationBuilder.UseEndpoints(endpoints => { endpoints.MapDefaultControllerRoute(); });
 		}
 
 		public virtual void ConfigureServices(IServiceCollection services)
@@ -50,38 +50,20 @@ namespace SampleApplication
 			if(services == null)
 				throw new ArgumentNullException(nameof(services));
 
+			// ReSharper disable UseNameOfInsteadOfTypeOf
 			services.AddSingleton<IRecaptchaSettings>(this.Configuration.GetSection(typeof(RecaptchaSettings).Name).Get<RecaptchaSettings>());
+			// ReSharper restore UseNameOfInsteadOfTypeOf
 
 			var assembliesToScan = new[] {typeof(RegionOrebroLan.IDateTimeContext).Assembly, typeof(RegionOrebroLan.Web.Paging.IPagination).Assembly, this.GetType().Assembly};
 
 			foreach(var mapping in new ServiceConfigurationScanner().Scan(assembliesToScan))
 			{
-				services.Add(new ServiceDescriptor(mapping.Configuration.ServiceType, mapping.Type, this.GetServiceLifetime(mapping)));
+				services.Add(new ServiceDescriptor(mapping.Configuration.ServiceType, mapping.Type, mapping.Configuration.Lifetime));
 			}
 
 			services.AddHttpContextAccessor();
 
-			services.AddMvc(options => options.Filters.Add<ViewModelFilter>());
-		}
-
-		[SuppressMessage("Microsoft.Style", "IDE0010:Add missing cases")]
-		protected internal virtual ServiceLifetime GetServiceLifetime(IServiceConfigurationMapping serviceConfigurationMapping)
-		{
-			if(serviceConfigurationMapping == null)
-				throw new ArgumentNullException(nameof(serviceConfigurationMapping));
-
-			// ReSharper disable SwitchStatementMissingSomeCases
-			switch(serviceConfigurationMapping.Configuration.InstanceMode)
-			{
-				case InstanceMode.Request:
-				case InstanceMode.Thread:
-					return ServiceLifetime.Scoped;
-				case InstanceMode.Singleton:
-					return ServiceLifetime.Singleton;
-				default:
-					return ServiceLifetime.Transient;
-			}
-			// ReSharper restore SwitchStatementMissingSomeCases
+			services.AddControllersWithViews(options => options.Filters.Add<ViewModelFilter>());
 		}
 
 		#endregion
