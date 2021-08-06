@@ -13,9 +13,9 @@ Additions and extensions for .NET web-applications, ASP.NET and ASP.NET Core.
 - [RegionOrebroLan.Web.Paging.PaginationFactory](/Source/Project/Paging/PaginationFactory.cs)
 
 ### 1.2 Example
-- [SampleApplication.Controllers.ListController](/Source/Sample-application/Controllers/ListController.cs)
-- [SampleApplication/Views/List/Index.cshtml](/Source/Sample-application/Views/List/Index.cshtml)
-- [SampleApplication/Views/Shared/Pagination.cshtml](/Source/Sample-application/Views/Shared/Pagination.cshtml)
+- [Application.Controllers.ListController](/Source/Sample/Application/Controllers/ListController.cs)
+- [Application/Views/List/Index.cshtml](/Source/Sample/Application/Views/List/Index.cshtml)
+- [Application/Views/Shared/Pagination.cshtml](/Source/Sample/Application/Views/Shared/Pagination.cshtml)
 
 ### 1.3 Pagination.cshtml
 
@@ -137,9 +137,9 @@ Additions and extensions for .NET web-applications, ASP.NET and ASP.NET Core.
 
 ### 2.2 Example
 
-- [SampleApplication.Business.Web.Mvc.Filters.ValidateRecaptchaTokenFilter](/Source/Sample-application/Business/Web/Mvc/Filters/ValidateRecaptchaTokenFilter.cs)
-- [SampleApplication.Business.Web.Mvc.ValidateRecaptchaTokenAttribute](/Source/Sample-application/Business/Web/Mvc/ValidateRecaptchaTokenAttribute.cs)
-- [SampleApplication.Controllers.RecaptchaController](/Source/Sample-application/Controllers/RecaptchaController.cs)
-- [SampleApplication/Views/Recaptcha/Form.cshtml](/Source/Sample-application/Views/Recaptcha/Form.cshtml)
-- [SampleApplication/Views/Recaptcha/Index.cshtml](/Source/Sample-application/Views/Recaptcha/Index.cshtml)
-- [Sample-application/Views/Shared/_Layout.cshtml](/Source/Sample-application/Views/Shared/_Layout.cshtml#L47)
+- [Application.Business.Web.Mvc.Filters.ValidateRecaptchaTokenFilter](/Source/Sample/Application/Business/Web/Mvc/Filters/ValidateRecaptchaTokenFilter.cs)
+- [Application.Business.Web.Mvc.ValidateRecaptchaTokenAttribute](/Source/Sample/Application/Business/Web/Mvc/ValidateRecaptchaTokenAttribute.cs)
+- [Application.Controllers.RecaptchaController](/Source/Sample/Application/Controllers/RecaptchaController.cs)
+- [Application/Views/Recaptcha/Form.cshtml](/Source/Sample/Application/Views/Recaptcha/Form.cshtml)
+- [Application/Views/Recaptcha/Index.cshtml](/Source/Sample/Application/Views/Recaptcha/Index.cshtml)
+- [Application/Views/Shared/_Layout.cshtml](/Source/Sample/Application/Views/Shared/_Layout.cshtml#L47)
