@@ -1,0 +1,11 @@
+﻿@model RecaptchaViewModel;
+<h1>Recaptcha</h1>
+@if(Model.Saved)
+{
+	<div class="alert alert-success">
+		<h2>Confirmation</h2>
+		<p>It was saved.</p>
+	</div>
+}
+@Html.ValidationSummary()
+<partial for="Form" name="Form.cshtml" />

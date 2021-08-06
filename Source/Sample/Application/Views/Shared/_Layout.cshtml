@@ -1,0 +1,84 @@
+﻿@model ViewModel
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>@Model.Title</title>
+		<link href="~/Style/bootstrap.css" rel="stylesheet" />
+		<link href="~/Style/site.css" rel="stylesheet" />
+	</head>
+	<body>
+		<header>
+			<nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom mb-3">
+				<div class="container">
+					<a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Sample-application</a>
+					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+					        aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+					<div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+						<ul class="navbar-nav flex-grow-1">
+							<li class="nav-item">
+								<a asp-controller="Home" asp-action="Index" class="nav-link text-dark">Home</a>
+							</li>
+							<li class="nav-item">
+								<a asp-controller="List" asp-action="Index" class="nav-link text-dark">List</a>
+							</li>
+							<li class="nav-item">
+								<a asp-controller="Recaptcha" asp-action="Index" class="nav-link text-dark">Recaptcha</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</nav>
+		</header>
+		<div class="container">
+			<main role="main" class="pb-3">
+				@RenderBody()
+			</main>
+		</div>
+		<footer class="border-top text-muted">
+			<div class="container">&copy; 2019 - Sample-application</div>
+		</footer>
+		<script src="~/Scripts/jquery.js"></script>
+		<script src="~/Scripts/popper.js"></script>
+		<script src="~/Scripts/bootstrap.js"></script>
+		@if(Model.Layout.Settings.Recaptcha.Enabled)
+		{
+			<script src="@Model.Layout.Settings.Recaptcha.ScriptUrl"></script>
+			<script>
+				grecaptcha.ready(function() {
+					$("form[data-recaptcha-enabled=\"true\"]").each(function() {
+						var formComponentsSelector = "button, input, textarea";
+						var form = $(this);
+
+						var anchorCharacter = "#";
+						var action = form.attr("action");
+						console.log("Form-action: " + action);
+						var actionParts = action.split(anchorCharacter);
+
+						if (actionParts.length > 1) {
+							actionParts.pop();
+							action = actionParts.join(anchorCharacter);
+							console.log("Form-action without anchor: " + action);
+						}
+
+						var recaptchaAction = action.replace(/[^a-zA-Z_]/g, "_").substring(0, 100); // Only A-Z, a-z and _ are supported and a maximum length of 100.
+						console.log("ReCaptcha-action: " + recaptchaAction);
+
+						form.find(formComponentsSelector).each(function() {
+							$(this).prop("disabled", true);
+						});
+						grecaptcha.execute("@Model.Layout.Settings.Recaptcha.SiteKey", { action: recaptchaAction }).then(function(token) {
+							form.prepend("<input name=\"@Model.Layout.Settings.Recaptcha.TokenParameterName\" type=\"hidden\" value=\"" + token + "\" />");
+							form.find(formComponentsSelector).each(function() {
+								$(this).prop("disabled", false);
+							});
+						});
+					});
+				});
+			</script>
+		}
+	</body>
+</html>

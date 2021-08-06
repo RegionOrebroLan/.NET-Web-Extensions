@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 
@@ -9,6 +9,7 @@ namespace RegionOrebroLan.Web.Security.Captcha.Extensions
 	{
 		#region Methods
 
+		[SuppressMessage("Design", "CA1021:Avoid out parameters")]
 		public static bool IsValid(this IRecaptchaValidator recaptchaValidator, IRecaptchaRequest request, out Exception exception)
 		{
 			if(recaptchaValidator == null)
