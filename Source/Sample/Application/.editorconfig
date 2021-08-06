@@ -3,3 +3,6 @@
 #dotnet_diagnostic.CA1054.severity = none
 #dotnet_diagnostic.CA1056.severity = none
 #dotnet_diagnostic.CA2007.severity = none
+
+[/Models/ViewModels/Shared/*.cs]
+dotnet_diagnostic.CA1716.severity = none
