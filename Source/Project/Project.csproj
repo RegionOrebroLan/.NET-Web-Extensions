@@ -24,7 +24,7 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
-		<PackageReference Include="RegionOrebroLan" Version="1.2.5-alpha" />
+		<PackageReference Include="RegionOrebroLan" Version="1.2.8-alpha" />
 	</ItemGroup>
 	<Target Name="HandleAssemblyOriginatorKeyFile" BeforeTargets="BeforeBuild" Condition="$(SignAssembly) AND !Exists('$(AssemblyOriginatorKeyFile)')">
 		<PropertyGroup>
