@@ -6,6 +6,7 @@
 	</PropertyGroup>
 	<PropertyGroup Label="Assembly">
 		<AssemblyName>RegionOrebroLan.Web</AssemblyName>
+		<AssemblyOriginatorKeyFile>$(SolutionDir).Global\Signing\StrongName.snk</AssemblyOriginatorKeyFile>
 		<AssemblyVersion>$(VersionPrefix).0</AssemblyVersion>
 		<Description>Additions and extensions for .NET web-applications, ASP.NET and ASP.NET Core.</Description>
 		<FileVersion>$(VersionPrefix).0</FileVersion>
