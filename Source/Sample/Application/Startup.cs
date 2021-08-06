@@ -51,7 +51,7 @@ namespace Application
 				throw new ArgumentNullException(nameof(services));
 
 			// ReSharper disable UseNameOfInsteadOfTypeOf
-			services.AddSingleton<IRecaptchaSettings>(this.Configuration.GetSection(typeof(RecaptchaSettings).Name).Get<RecaptchaSettings>());
+			services.AddSingleton<IRecaptchaSettings>(this.Configuration.GetSection(nameof(RecaptchaSettings)).Get<RecaptchaSettings>());
 			// ReSharper restore UseNameOfInsteadOfTypeOf
 
 			var assembliesToScan = new[] { typeof(RegionOrebroLan.IDateTimeContext).Assembly, typeof(RegionOrebroLan.Web.Paging.IPagination).Assembly, this.GetType().Assembly };
