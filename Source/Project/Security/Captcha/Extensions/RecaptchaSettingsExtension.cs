@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 
 namespace RegionOrebroLan.Web.Security.Captcha.Extensions
@@ -8,7 +7,6 @@ namespace RegionOrebroLan.Web.Security.Captcha.Extensions
 	{
 		#region Methods
 
-		[SuppressMessage("Design", "CA1055:Uri return values should not be strings")]
 		public static Uri ClientScriptUrl(this IRecaptchaSettings recaptchaSettings)
 		{
 			if(recaptchaSettings == null)
