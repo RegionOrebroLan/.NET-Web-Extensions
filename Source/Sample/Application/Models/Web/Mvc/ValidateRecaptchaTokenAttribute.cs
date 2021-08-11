@@ -1,9 +1,9 @@
 using System;
-using Application.Business.Web.Mvc.Filters;
+using Application.Models.Web.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Application.Business.Web.Mvc
+namespace Application.Models.Web.Mvc
 {
 	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
 	public sealed class ValidateRecaptchaTokenAttribute : Attribute, IFilterFactory, IOrderedFilter, IValidateRecaptchaTokenAttribute

@@ -391,3 +391,13 @@ FodyWeavers.xsd
 Source/.Global/Signing/*
 !Source/.Global/Signing/ReadMe.md
 !Source/.Global/Signing/StrongName.Development.snk
+
+Source/Sample/Application/Scripts/**/*.js.map
+Source/Sample/Application/Scripts/**/*.js
+Source/Sample/Application/Style/**/*.css
+Source/Sample/Application/wwwroot/Scripts/*
+!Source/Sample/Application/wwwroot/Scripts/.gitkeep
+Source/Sample/Application/wwwroot/Style/*
+!Source/Sample/Application/wwwroot/Style/.gitkeep
+!Source/Sample/Application/wwwroot/favicon.ico
+Source/Sample/Application/package-lock.json

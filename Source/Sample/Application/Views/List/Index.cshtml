@@ -1,5 +1,5 @@
-﻿@model ListViewModel;
-<h1>List</h1>
+﻿@{ ViewData["Name"] = "List"; }
+@model ListViewModel;
 <partial for="Form" name="Form.cshtml" />
 <hr />
 <partial for="Pagination" name="~/Views/Shared/Pagination.cshtml" />

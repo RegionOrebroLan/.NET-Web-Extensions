@@ -1,10 +1,10 @@
 using System;
-using Application.Business.Web.Mvc.Filters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using RegionOrebroLan.DependencyInjection;
 using RegionOrebroLan.DependencyInjection.Extensions;
 using RegionOrebroLan.Web.Security.Captcha;
@@ -50,9 +50,9 @@ namespace Application
 			if(services == null)
 				throw new ArgumentNullException(nameof(services));
 
-			// ReSharper disable UseNameOfInsteadOfTypeOf
-			services.AddSingleton<IRecaptchaSettings>(this.Configuration.GetSection(nameof(RecaptchaSettings)).Get<RecaptchaSettings>());
-			// ReSharper restore UseNameOfInsteadOfTypeOf
+			services.Configure<RecaptchaSettings>(this.Configuration.GetSection("Recaptcha"));
+
+			services.AddTransient<IRecaptchaSettings>(serviceProvider => serviceProvider.GetRequiredService<IOptionsMonitor<RecaptchaSettings>>().CurrentValue);
 
 			var assembliesToScan = new[] { typeof(RegionOrebroLan.IDateTimeContext).Assembly, typeof(RegionOrebroLan.Web.Paging.IPagination).Assembly, this.GetType().Assembly };
 
@@ -63,7 +63,7 @@ namespace Application
 
 			services.AddHttpContextAccessor();
 
-			services.AddControllersWithViews(options => options.Filters.Add<ViewModelFilter>());
+			services.AddControllersWithViews();
 		}
 
 		#endregion

@@ -39,8 +39,6 @@ namespace Application.Controllers
 				Pagination = this.PaginationFactory.Create(form.MaximumNumberOfDisplayedPages, form.NumberOfItems, "PageIndex", form.PageSize, url, form.ZeroBasedIndex)
 			};
 
-			model.Heading = model.Title = "List";
-
 			for(var i = 0; i < form.NumberOfItems; i++)
 			{
 				var index = i + (form.ZeroBasedIndex ? 0 : 1);

@@ -7,11 +7,12 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.Extensions.Options;
 using RegionOrebroLan.DependencyInjection;
 using RegionOrebroLan.Web.Security.Captcha;
 using RegionOrebroLan.Web.Security.Captcha.Extensions;
 
-namespace Application.Business.Web.Mvc.Filters
+namespace Application.Models.Web.Mvc.Filters
 {
 	[ServiceConfiguration(ServiceType = typeof(ValidateRecaptchaTokenFilter))]
 	[SuppressMessage("Design", "CA1031:Do not catch general exception types")]
@@ -25,12 +26,12 @@ namespace Application.Business.Web.Mvc.Filters
 
 		#region Constructors
 
-		public ValidateRecaptchaTokenFilter(IRecaptchaClientActionResolver clientActionResolver, IModelMetadataProvider modelMetadataProvider, IRecaptchaRequestFactory requestFactory, IRecaptchaSettings settings, IRecaptchaValidator validator)
+		public ValidateRecaptchaTokenFilter(IRecaptchaClientActionResolver clientActionResolver, IModelMetadataProvider modelMetadataProvider, IOptionsMonitor<RecaptchaSettings> optionsMonitor, IRecaptchaRequestFactory requestFactory, IRecaptchaValidator validator)
 		{
 			this.ClientActionResolver = clientActionResolver ?? throw new ArgumentNullException(nameof(clientActionResolver));
 			this.ModelMetadataProvider = modelMetadataProvider ?? throw new ArgumentNullException(nameof(modelMetadataProvider));
+			this.OptionsMonitor = optionsMonitor ?? throw new ArgumentNullException(nameof(optionsMonitor));
 			this.RequestFactory = requestFactory ?? throw new ArgumentNullException(nameof(requestFactory));
-			this.Settings = settings ?? throw new ArgumentNullException(nameof(settings));
 			this.Validator = validator ?? throw new ArgumentNullException(nameof(validator));
 		}
 
@@ -41,8 +42,8 @@ namespace Application.Business.Web.Mvc.Filters
 		protected internal virtual IRecaptchaClientActionResolver ClientActionResolver { get; }
 		protected internal virtual string ModelErrorKey => _modelErrorKey;
 		protected internal virtual IModelMetadataProvider ModelMetadataProvider { get; }
+		protected internal virtual IOptionsMonitor<RecaptchaSettings> OptionsMonitor { get; }
 		protected internal virtual IRecaptchaRequestFactory RequestFactory { get; }
-		protected internal virtual IRecaptchaSettings Settings { get; }
 		protected internal virtual IRecaptchaValidator Validator { get; }
 
 		#endregion
@@ -106,7 +107,7 @@ namespace Application.Business.Web.Mvc.Filters
 			if(context == null)
 				throw new ArgumentNullException(nameof(context));
 
-			if(!this.Settings.EnabledOnServer())
+			if(!this.OptionsMonitor.CurrentValue.EnabledOnServer())
 				return;
 
 			var action = this.ClientActionResolver.Resolve(this.GetAction(context));

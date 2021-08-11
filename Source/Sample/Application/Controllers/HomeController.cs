@@ -1,4 +1,3 @@
-using Application.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Application.Controllers
@@ -9,7 +8,7 @@ namespace Application.Controllers
 
 		public virtual IActionResult Index()
 		{
-			return this.View(new ViewModel { Heading = "Home", Title = "Home" });
+			return this.View();
 		}
 
 		#endregion

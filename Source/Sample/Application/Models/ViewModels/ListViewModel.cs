@@ -4,7 +4,7 @@ using RegionOrebroLan.Web.Paging;
 
 namespace Application.Models.ViewModels
 {
-	public class ListViewModel : ViewModel
+	public class ListViewModel
 	{
 		#region Properties
 

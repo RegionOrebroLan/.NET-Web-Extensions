@@ -3,6 +3,7 @@
 		<CopyRefAssembliesToPublishDirectory>false</CopyRefAssembliesToPublishDirectory>
 		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
 		<TargetFramework>net5.0</TargetFramework>
+		<TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
 		<UserSecretsId>f3abd2c5-2593-4840-8add-401d48f49fbd</UserSecretsId>
 	</PropertyGroup>
 	<ItemGroup>
@@ -11,11 +12,5 @@
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\..\Project\Project.csproj" />
-	</ItemGroup>
-	<ItemGroup>
-		<None Include="wwwroot\Scripts\bootstrap.js" />
-		<None Include="wwwroot\Scripts\jquery.js" />
-		<None Include="wwwroot\Scripts\popper.js" />
-		<None Include="wwwroot\Style\bootstrap.css" />
 	</ItemGroup>
 </Project>

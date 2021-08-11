@@ -2,7 +2,7 @@ using Application.Models.Forms;
 
 namespace Application.Models.ViewModels
 {
-	public class RecaptchaViewModel : ViewModel
+	public class RecaptchaViewModel
 	{
 		#region Properties
 

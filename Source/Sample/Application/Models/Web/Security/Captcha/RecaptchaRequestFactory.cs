@@ -1,10 +1,11 @@
 using System;
 using System.Net;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
 using RegionOrebroLan.DependencyInjection;
 using RegionOrebroLan.Web.Security.Captcha;
 
-namespace Application.Business.Web.Security.Captcha
+namespace Application.Models.Web.Security.Captcha
 {
 	/// <inheritdoc />
 	[ServiceConfiguration(ServiceType = typeof(IRecaptchaRequestFactory))]
@@ -12,10 +13,10 @@ namespace Application.Business.Web.Security.Captcha
 	{
 		#region Constructors
 
-		public RecaptchaRequestFactory(IHttpContextAccessor httpContextAccessor, IRecaptchaSettings settings)
+		public RecaptchaRequestFactory(IHttpContextAccessor httpContextAccessor, IOptionsMonitor<RecaptchaSettings> optionsMonitor)
 		{
 			this.HttpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
-			this.Settings = settings ?? throw new ArgumentNullException(nameof(settings));
+			this.OptionsMonitor = optionsMonitor ?? throw new ArgumentNullException(nameof(optionsMonitor));
 		}
 
 		#endregion
@@ -23,7 +24,7 @@ namespace Application.Business.Web.Security.Captcha
 		#region Properties
 
 		protected internal virtual IHttpContextAccessor HttpContextAccessor { get; }
-		protected internal virtual IRecaptchaSettings Settings { get; }
+		protected internal virtual IOptionsMonitor<RecaptchaSettings> OptionsMonitor { get; }
 
 		#endregion
 
@@ -64,7 +65,7 @@ namespace Application.Business.Web.Security.Captcha
 				throw new ArgumentNullException(nameof(httpContext));
 
 			var httpRequest = httpContext.Request;
-			var tokenParameterName = this.Settings.TokenParameterName;
+			var tokenParameterName = this.OptionsMonitor.CurrentValue.TokenParameterName;
 
 			// ReSharper disable ConvertIfStatementToReturnStatement
 			if(string.Equals(httpRequest.Method, "post", StringComparison.OrdinalIgnoreCase))

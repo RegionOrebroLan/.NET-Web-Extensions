@@ -1,6 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 
-namespace Application.Business.Web.Mvc
+namespace Application.Models.Web.Mvc
 {
 	[SuppressMessage("Naming", "CA1711:Identifiers should not have incorrect suffix")]
 	public interface IValidateRecaptchaTokenAttribute

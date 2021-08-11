@@ -1,0 +1,1 @@
+Put svg-icons for the sprite-svg here.

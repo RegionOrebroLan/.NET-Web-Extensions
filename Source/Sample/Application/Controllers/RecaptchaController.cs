@@ -1,8 +1,6 @@
-using System;
-using Application.Business.Web.Mvc;
 using Application.Models.Forms;
 using Application.Models.ViewModels;
-using Application.Models.ViewModels.Shared;
+using Application.Models.Web.Mvc;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Application.Controllers
@@ -19,7 +17,6 @@ namespace Application.Controllers
 		protected internal virtual RecaptchaViewModel CreateModel(RecaptchaForm form)
 		{
 			var model = new RecaptchaViewModel();
-			model.Heading = model.Title = "Recaptcha";
 
 			if(form != null)
 				model.Form = form;
@@ -30,16 +27,6 @@ namespace Application.Controllers
 		public virtual IActionResult Index()
 		{
 			return this.View(this.CreateModel());
-		}
-
-		public override void ModifyLayout(ILayout layout)
-		{
-			if(layout == null)
-				throw new ArgumentNullException(nameof(layout));
-
-			base.ModifyLayout(layout);
-
-			layout.Settings.Recaptcha.Enabled = true;
 		}
 
 		[HttpPost]
