@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace RegionOrebroLan.Web.Security.Captcha.Configuration
 {
@@ -33,7 +33,7 @@ namespace RegionOrebroLan.Web.Security.Captcha.Configuration
 		/// <summary>
 		/// The minimum time elapsed since the timestamp in order to validate.
 		/// </summary>
-		public virtual TimeSpan MinimumTimestampElapse { get; set; } = TimeSpan.FromSeconds(1);
+		public virtual TimeSpan MinimumTimestampElapse { get; set; } = TimeSpan.FromMilliseconds(5);
 
 		/// <summary>
 		/// To bind to this property by using a configuration-file, eg. AppSettings.json, declare the value as a comma-separated string: "EnabledOnClient, EnabledOnServer".
