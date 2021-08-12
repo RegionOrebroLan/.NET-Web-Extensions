@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RegionOrebroLan.Web.Paging;
 
@@ -24,8 +25,10 @@ namespace IntegrationTests.Paging
 
 		[TestMethod]
 		[ExpectedException(typeof(ArgumentException))]
-		public void Create_IfTheMaximumNumberOfDisplayedPagesParameterIsLessThanOne_ShouldThrowAnArgumentException()
+		public async Task Create_IfTheMaximumNumberOfDisplayedPagesParameterIsLessThanOne_ShouldThrowAnArgumentException()
 		{
+			await Task.CompletedTask;
+
 			try
 			{
 				this.PaginationFactory.Create(0, 10, "Test", 10, new Uri("http://localhost"));
@@ -39,8 +42,10 @@ namespace IntegrationTests.Paging
 
 		[TestMethod]
 		[ExpectedException(typeof(ArgumentException))]
-		public void Create_IfTheNumberOfItemsParameterIsLessThanZero_ShouldThrowAnArgumentException()
+		public async Task Create_IfTheNumberOfItemsParameterIsLessThanZero_ShouldThrowAnArgumentException()
 		{
+			await Task.CompletedTask;
+
 			try
 			{
 				this.PaginationFactory.Create(10, -1, "Test", 10, new Uri("http://localhost"));
@@ -54,8 +59,10 @@ namespace IntegrationTests.Paging
 
 		[TestMethod]
 		[ExpectedException(typeof(ArgumentException))]
-		public void Create_IfThePageIndexKeyParameterHasADifferentUrlEncodedValue_ShouldThrowAnArgumentException()
+		public async Task Create_IfThePageIndexKeyParameterHasADifferentUrlEncodedValue_ShouldThrowAnArgumentException()
 		{
+			await Task.CompletedTask;
+
 			const string pageIndexKey = " Test ";
 
 			try
@@ -71,8 +78,10 @@ namespace IntegrationTests.Paging
 
 		[TestMethod]
 		[ExpectedException(typeof(ArgumentException))]
-		public void Create_IfThePageIndexKeyParameterIsEmpty_ShouldThrowAnArgumentException()
+		public async Task Create_IfThePageIndexKeyParameterIsEmpty_ShouldThrowAnArgumentException()
 		{
+			await Task.CompletedTask;
+
 			try
 			{
 				this.PaginationFactory.Create(10, 10, string.Empty, 10, new Uri("http://localhost"));
@@ -86,8 +95,10 @@ namespace IntegrationTests.Paging
 
 		[TestMethod]
 		[ExpectedException(typeof(ArgumentNullException))]
-		public void Create_IfThePageIndexKeyParameterIsNull_ShouldThrowAnArgumentNullException()
+		public async Task Create_IfThePageIndexKeyParameterIsNull_ShouldThrowAnArgumentNullException()
 		{
+			await Task.CompletedTask;
+
 			try
 			{
 				this.PaginationFactory.Create(10, 10, null, 10, new Uri("http://localhost"));
@@ -101,8 +112,10 @@ namespace IntegrationTests.Paging
 
 		[TestMethod]
 		[ExpectedException(typeof(ArgumentException))]
-		public void Create_IfThePageIndexKeyParameterIsWhitespace_ShouldThrowAnArgumentException()
+		public async Task Create_IfThePageIndexKeyParameterIsWhitespace_ShouldThrowAnArgumentException()
 		{
+			await Task.CompletedTask;
+
 			try
 			{
 				this.PaginationFactory.Create(10, 10, "    ", 10, new Uri("http://localhost"));
@@ -116,8 +129,10 @@ namespace IntegrationTests.Paging
 
 		[TestMethod]
 		[ExpectedException(typeof(ArgumentException))]
-		public void Create_IfTheUrlParameterIsNotAbsolute_ShouldThrowAnArgumentException()
+		public async Task Create_IfTheUrlParameterIsNotAbsolute_ShouldThrowAnArgumentException()
 		{
+			await Task.CompletedTask;
+
 			try
 			{
 				this.PaginationFactory.Create(10, 10, "Test", 10, new Uri("/Test/", UriKind.Relative));
@@ -131,8 +146,10 @@ namespace IntegrationTests.Paging
 
 		[TestMethod]
 		[ExpectedException(typeof(ArgumentNullException))]
-		public void Create_IfTheUrlParameterIsNull_ShouldThrowAnArgumentNullException()
+		public async Task Create_IfTheUrlParameterIsNull_ShouldThrowAnArgumentNullException()
 		{
+			await Task.CompletedTask;
+
 			try
 			{
 				this.PaginationFactory.Create(10, 10, "Test", 10, null);

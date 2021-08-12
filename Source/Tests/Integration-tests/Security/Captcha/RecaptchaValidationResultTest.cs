@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using RegionOrebroLan.Web.Security.Captcha;
@@ -11,8 +12,10 @@ namespace IntegrationTests.Security.Captcha
 		#region Methods
 
 		[TestMethod]
-		public void JsonDeserialize_Test()
+		public async Task JsonDeserialize_Test()
 		{
+			await Task.CompletedTask;
+
 			var recaptchaValidationResult = new RecaptchaValidationResult
 			{
 				Action = "Action",
@@ -29,8 +32,10 @@ namespace IntegrationTests.Security.Captcha
 		}
 
 		[TestMethod]
-		public void JsonSerialize_Test()
+		public async Task JsonSerialize_Test()
 		{
+			await Task.CompletedTask;
+
 			const string value = "{\"action\":\"Action\",\"error-codes\":[\"Error-code-1\",\"Error-code-2\"],\"hostname\":\"host.com\",\"success\":true,\"First-property\":\"First-property-value\",\"Second-property\":\"Second-property-value\"}";
 
 			var recaptchaValidationResult = JsonConvert.DeserializeObject<RecaptchaValidationResult>(value, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });

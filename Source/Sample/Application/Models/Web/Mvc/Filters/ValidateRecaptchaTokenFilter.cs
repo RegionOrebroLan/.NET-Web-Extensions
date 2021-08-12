@@ -8,13 +8,12 @@ using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Options;
-using RegionOrebroLan.DependencyInjection;
 using RegionOrebroLan.Web.Security.Captcha;
-using RegionOrebroLan.Web.Security.Captcha.Extensions;
+using RegionOrebroLan.Web.Security.Captcha.Configuration;
+using RegionOrebroLan.Web.Security.Captcha.Configuration.Extensions;
 
 namespace Application.Models.Web.Mvc.Filters
 {
-	[ServiceConfiguration(ServiceType = typeof(ValidateRecaptchaTokenFilter))]
 	[SuppressMessage("Design", "CA1031:Do not catch general exception types")]
 	public class ValidateRecaptchaTokenFilter : IAsyncActionFilter
 	{
@@ -26,7 +25,7 @@ namespace Application.Models.Web.Mvc.Filters
 
 		#region Constructors
 
-		public ValidateRecaptchaTokenFilter(IRecaptchaClientActionResolver clientActionResolver, IModelMetadataProvider modelMetadataProvider, IOptionsMonitor<RecaptchaSettings> optionsMonitor, IRecaptchaRequestFactory requestFactory, IRecaptchaValidator validator)
+		public ValidateRecaptchaTokenFilter(IRecaptchaClientActionResolver clientActionResolver, IModelMetadataProvider modelMetadataProvider, IOptionsMonitor<RecaptchaOptions> optionsMonitor, IRecaptchaRequestFactory requestFactory, IRecaptchaValidator validator)
 		{
 			this.ClientActionResolver = clientActionResolver ?? throw new ArgumentNullException(nameof(clientActionResolver));
 			this.ModelMetadataProvider = modelMetadataProvider ?? throw new ArgumentNullException(nameof(modelMetadataProvider));
@@ -42,7 +41,7 @@ namespace Application.Models.Web.Mvc.Filters
 		protected internal virtual IRecaptchaClientActionResolver ClientActionResolver { get; }
 		protected internal virtual string ModelErrorKey => _modelErrorKey;
 		protected internal virtual IModelMetadataProvider ModelMetadataProvider { get; }
-		protected internal virtual IOptionsMonitor<RecaptchaSettings> OptionsMonitor { get; }
+		protected internal virtual IOptionsMonitor<RecaptchaOptions> OptionsMonitor { get; }
 		protected internal virtual IRecaptchaRequestFactory RequestFactory { get; }
 		protected internal virtual IRecaptchaValidator Validator { get; }
 

@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 
-namespace RegionOrebroLan.Web.Security.Captcha
+namespace RegionOrebroLan.Web.Security.Captcha.Configuration
 {
 	[Flags]
 	public enum RecaptchaModes

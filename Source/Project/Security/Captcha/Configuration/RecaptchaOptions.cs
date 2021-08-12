@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 
-namespace RegionOrebroLan.Web.Security.Captcha
+namespace RegionOrebroLan.Web.Security.Captcha.Configuration
 {
-	/// <inheritdoc />
-	[SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters")]
-	public class RecaptchaSettings : IRecaptchaSettings
+	public class RecaptchaOptions
 	{
 		#region Fields
 
@@ -26,16 +23,25 @@ namespace RegionOrebroLan.Web.Security.Captcha
 			}
 		}
 
+		/// <summary>
+		/// The maximum time elapsed since the timestamp in order to validate.
+		/// </summary>
 		public virtual TimeSpan MaximumTimestampElapse { get; set; } = TimeSpan.FromHours(4);
+
 		public virtual decimal MinimumScore { get; set; } = 0.1m;
+
+		/// <summary>
+		/// The minimum time elapsed since the timestamp in order to validate.
+		/// </summary>
 		public virtual TimeSpan MinimumTimestampElapse { get; set; } = TimeSpan.FromSeconds(1);
+
+		/// <summary>
+		/// To bind to this property by using a configuration-file, eg. AppSettings.json, declare the value as a comma-separated string: "EnabledOnClient, EnabledOnServer".
+		/// </summary>
 		public virtual RecaptchaModes Mode { get; set; } = RecaptchaModes.EnabledOnClient | RecaptchaModes.EnabledOnServer;
+
 		public virtual string SecretKey { get; set; }
 		public virtual string SiteKey { get; set; }
-
-		[Obsolete("This property will be removed. It is a misunderstanding. Use MaximumTimestampElapse and MinimumTimestampElapse instead.")]
-		public virtual TimeSpan TimestampExpiration { get; set; } = TimeSpan.FromMinutes(1);
-
 		public virtual string TokenParameterName { get; set; } = "RecaptchaToken";
 		public virtual bool ValidateIp { get; set; } = true;
 

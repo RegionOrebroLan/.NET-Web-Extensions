@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RegionOrebroLan.Web.Security.Captcha;
 
@@ -21,14 +22,18 @@ namespace UnitTests.Security.Captcha
 		#region Methods
 
 		[TestMethod]
-		public void Resolve_IfTheActionParameterIsAnEmptyString_ShouldReturnAnEmptyString()
+		public async Task Resolve_IfTheActionParameterIsAnEmptyString_ShouldReturnAnEmptyString()
 		{
+			await Task.CompletedTask;
+
 			Assert.AreEqual(string.Empty, this.RecaptchaClientActionResolver.Resolve(string.Empty));
 		}
 
 		[TestMethod]
-		public void Resolve_IfTheActionParameterIsLongerThanHundredCharacters_ShouldReturnTheFirstHundredCharacters()
+		public async Task Resolve_IfTheActionParameterIsLongerThanHundredCharacters_ShouldReturnTheFirstHundredCharacters()
 		{
+			await Task.CompletedTask;
+
 			const string action = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_123456789!\"#¤%&/()=?@£$€{[]}\\^~*'abcdefghijklmn";
 			const string expected = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ__________________________________abcdefghijklmn";
 			Assert.AreEqual(100, action.Length);
@@ -37,22 +42,28 @@ namespace UnitTests.Security.Captcha
 		}
 
 		[TestMethod]
-		public void Resolve_IfTheActionParameterIsNull_ShouldReturnNull()
+		public async Task Resolve_IfTheActionParameterIsNull_ShouldReturnNull()
 		{
+			await Task.CompletedTask;
+
 			Assert.IsNull(this.RecaptchaClientActionResolver.Resolve(null));
 		}
 
 		[TestMethod]
-		public void Resolve_IfTheActionParameterOnlyContainsInvalidCharacters_ShouldReturnAValueWhereTheInvalidCharactersAreReplacedWithAnUnderscore()
+		public async Task Resolve_IfTheActionParameterOnlyContainsInvalidCharacters_ShouldReturnAValueWhereTheInvalidCharactersAreReplacedWithAnUnderscore()
 		{
+			await Task.CompletedTask;
+
 			const string action = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_123456789!\"#¤%&/()=?@£$€{[]}\\^~*'";
 			const string expected = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ__________________________________";
 			Assert.AreEqual(expected, this.RecaptchaClientActionResolver.Resolve(action));
 		}
 
 		[TestMethod]
-		public void Resolve_IfTheActionParameterOnlyContainsValidCharacters_ShouldReturnAnUnchangedValue()
+		public async Task Resolve_IfTheActionParameterOnlyContainsValidCharacters_ShouldReturnAnUnchangedValue()
 		{
+			await Task.CompletedTask;
+
 			const string action = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_";
 			Assert.AreEqual(action, this.RecaptchaClientActionResolver.Resolve(action));
 		}

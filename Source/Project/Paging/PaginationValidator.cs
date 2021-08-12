@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using RegionOrebroLan.DependencyInjection;
@@ -6,7 +6,6 @@ using RegionOrebroLan.DependencyInjection;
 namespace RegionOrebroLan.Web.Paging
 {
 	[ServiceConfiguration(ServiceType = typeof(IPaginationValidator))]
-	[SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters")]
 	public class PaginationValidator : IPaginationValidator
 	{
 		#region Methods

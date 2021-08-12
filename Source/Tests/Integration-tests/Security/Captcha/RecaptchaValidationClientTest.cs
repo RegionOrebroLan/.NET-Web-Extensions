@@ -1,6 +1,9 @@
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RegionOrebroLan.Web.Security.Captcha;
+using RegionOrebroLan.Web.Security.Captcha.DependencyInjection.Extensions;
 
 namespace IntegrationTests.Security.Captcha
 {
@@ -9,43 +12,30 @@ namespace IntegrationTests.Security.Captcha
 	{
 		#region Methods
 
-		protected internal virtual IRecaptchaSettings CreateDefaultSettings()
+		protected internal virtual async Task<ServiceProvider> CreateServiceProviderAsync()
 		{
-			return new RecaptchaSettings
-			{
-				ClientScriptUrlFormat = Global.RecaptchaSettings.ClientScriptUrlFormat,
-				MaximumTimestampElapse = Global.RecaptchaSettings.MaximumTimestampElapse,
-				MinimumTimestampElapse = Global.RecaptchaSettings.MinimumTimestampElapse,
-				Mode = Global.RecaptchaSettings.Mode,
-				SecretKey = Global.RecaptchaSettings.SecretKey,
-				SiteKey = Global.RecaptchaSettings.SiteKey,
-				ValidationUrl = Global.RecaptchaSettings.ValidationUrl
-			};
-		}
+			var configuration = Global.CreateDefaultConfigurationBuilder().Build();
 
-		protected internal virtual RecaptchaValidationClient CreateValidationClient()
-		{
-			return this.CreateValidationClient(this.CreateDefaultSettings());
-		}
+			var services = Global.CreateServices(configuration);
+			services.AddRecaptcha(configuration);
 
-		protected internal virtual RecaptchaValidationClient CreateValidationClient(IRecaptchaSettings settings)
-		{
-			return new RecaptchaValidationClient(settings);
+			return await Task.FromResult(services.BuildServiceProvider());
 		}
 
 		[TestMethod]
-		public void GetValidationResultAsync_Test()
+		public async Task GetValidationResultAsync_Test()
 		{
-			var validationClient = this.CreateValidationClient();
+			using(var serviceProvider = await this.CreateServiceProviderAsync())
+			{
+				var validationClient = serviceProvider.GetRequiredService<IRecaptchaValidationClient>();
 
-			var asynchronousResult = validationClient.GetValidationResultAsync(null, "Test");
+				var result = await validationClient.GetValidationResultAsync(null, "Test");
 
-			var result = asynchronousResult.Result;
-
-			Assert.IsNotNull(result);
-			Assert.IsFalse(result.Success);
-			Assert.AreEqual(1, result.Errors.Count());
-			Assert.AreEqual("invalid-input-response", result.Errors.First());
+				Assert.IsNotNull(result);
+				Assert.IsFalse(result.Success);
+				Assert.AreEqual(1, result.Errors.Count());
+				Assert.AreEqual("invalid-input-response", result.Errors.First());
+			}
 		}
 
 		#endregion

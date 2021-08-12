@@ -2,8 +2,9 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using RegionOrebroLan.Web.Security.Captcha;
 
 namespace IntegrationTests
 {
@@ -14,9 +15,7 @@ namespace IntegrationTests
 	{
 		#region Fields
 
-		public static readonly string ProjectDirectoryPath = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory).Parent.Parent.Parent.FullName;
-		public static readonly IConfiguration Configuration = new ConfigurationBuilder().SetBasePath(ProjectDirectoryPath).AddJsonFile("AppSettings.json").Build();
-		public static readonly IRecaptchaSettings RecaptchaSettings = Configuration.GetSection(nameof(RecaptchaSettings)).Get<RecaptchaSettings>();
+		public static readonly string ProjectDirectoryPath = new DirectoryInfo(Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName;
 
 		#endregion
 
@@ -24,6 +23,56 @@ namespace IntegrationTests
 
 		[AssemblyCleanup]
 		public static void Cleanup() { }
+
+		public static IConfiguration CreateConfiguration(params string[] jsonFilePaths)
+		{
+			return CreateConfiguration(false, jsonFilePaths);
+		}
+
+		public static IConfiguration CreateConfiguration(bool optional, params string[] jsonFilePaths)
+		{
+			var configurationBuilder = CreateConfigurationBuilder(optional, jsonFilePaths);
+
+			return configurationBuilder.Build();
+		}
+
+		public static IConfigurationBuilder CreateConfigurationBuilder(params string[] jsonFilePaths)
+		{
+			return CreateConfigurationBuilder(false, jsonFilePaths);
+		}
+
+		public static IConfigurationBuilder CreateConfigurationBuilder(bool optional, params string[] jsonFilePaths)
+		{
+			var configurationBuilder = new ConfigurationBuilder().SetBasePath(ProjectDirectoryPath);
+
+			foreach(var path in jsonFilePaths)
+			{
+				configurationBuilder.AddJsonFile(path, optional, true);
+			}
+
+			return configurationBuilder;
+		}
+
+		public static IConfigurationBuilder CreateDefaultConfigurationBuilder()
+		{
+			return CreateConfigurationBuilder("appsettings.json");
+		}
+
+		public static IServiceCollection CreateServices(IConfiguration configuration)
+		{
+			var services = new ServiceCollection();
+
+			services.AddSingleton(configuration);
+			services.AddSingleton<LoggerFactory>();
+			services.AddLogging(loggingBuilder =>
+			{
+				loggingBuilder.AddConfiguration(configuration.GetSection("Logging"));
+				loggingBuilder.AddConsole();
+				loggingBuilder.AddDebug();
+			});
+
+			return services;
+		}
 
 		[AssemblyInitialize]
 		public static void Initialize(TestContext testContext)

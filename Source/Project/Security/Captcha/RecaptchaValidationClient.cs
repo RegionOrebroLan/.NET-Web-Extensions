@@ -1,11 +1,13 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using RegionOrebroLan.DependencyInjection;
+using RegionOrebroLan.Web.Security.Captcha.Configuration;
 
 namespace RegionOrebroLan.Web.Security.Captcha
 {
@@ -14,16 +16,16 @@ namespace RegionOrebroLan.Web.Security.Captcha
 	{
 		#region Constructors
 
-		public RecaptchaValidationClient(IRecaptchaSettings settings)
+		public RecaptchaValidationClient(IOptionsMonitor<RecaptchaOptions> optionsMonitor)
 		{
-			this.Settings = settings ?? throw new ArgumentNullException(nameof(settings));
+			this.OptionsMonitor = optionsMonitor ?? throw new ArgumentNullException(nameof(optionsMonitor));
 		}
 
 		#endregion
 
 		#region Properties
 
-		protected internal virtual IRecaptchaSettings Settings { get; }
+		protected internal virtual IOptionsMonitor<RecaptchaOptions> OptionsMonitor { get; }
 
 		#endregion
 
@@ -38,8 +40,8 @@ namespace RegionOrebroLan.Web.Security.Captcha
 		{
 			var parameters = new Dictionary<string, string>
 			{
-				{"response", token},
-				{"secret", this.Settings.SecretKey}
+				{ "response", token },
+				{ "secret", this.OptionsMonitor.CurrentValue.SecretKey }
 			};
 
 			if(ip != null)
@@ -52,7 +54,7 @@ namespace RegionOrebroLan.Web.Security.Captcha
 		{
 			using(var httpClient = new HttpClient())
 			{
-				var response = await httpClient.PostAsync(this.Settings.ValidationUrl, this.CreateValidationResultContent(ip, token)).ConfigureAwait(false);
+				var response = await httpClient.PostAsync(this.OptionsMonitor.CurrentValue.ValidationUrl, this.CreateValidationResultContent(ip, token)).ConfigureAwait(false);
 
 				// ReSharper disable InvertIf
 				if(response.IsSuccessStatusCode)

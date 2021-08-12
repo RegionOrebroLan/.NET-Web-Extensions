@@ -1,10 +1,12 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Internal;
+using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using RegionOrebroLan;
 using RegionOrebroLan.Web.Security.Captcha;
+using RegionOrebroLan.Web.Security.Captcha.Configuration;
 
 namespace UnitTests.Security.Captcha
 {
@@ -13,43 +15,56 @@ namespace UnitTests.Security.Captcha
 	{
 		#region Methods
 
-		protected internal virtual IDateTimeContext CreateDateTimeContext()
+		protected internal virtual async Task<IOptionsMonitor<RecaptchaOptions>> CreateOptionsMonitorAsync(RecaptchaModes mode)
 		{
-			return this.CreateDateTimeContext(DateTime.UtcNow);
+			var options = new RecaptchaOptions
+			{
+				ClientScriptUrlFormat = default,
+				MaximumTimestampElapse = default,
+				MinimumScore = default,
+				MinimumTimestampElapse = default,
+				Mode = mode,
+				SiteKey = default,
+				SecretKey = default,
+				TokenParameterName = default,
+				ValidateIp = default,
+				ValidationUrl = default
+			};
+			var optionsMonitorMock = new Mock<IOptionsMonitor<RecaptchaOptions>>();
+			optionsMonitorMock.Setup(optionsMonitor => optionsMonitor.CurrentValue).Returns(options);
+			return await Task.FromResult(optionsMonitorMock.Object);
 		}
 
-		protected internal virtual IDateTimeContext CreateDateTimeContext(DateTime utcNow)
+		protected internal virtual async Task<ISystemClock> CreateSystemClockAsync()
 		{
-			var dateTimeContextMock = new Mock<IDateTimeContext>();
-			dateTimeContextMock.Setup(dateTimeContext => dateTimeContext.UtcNow).Returns(utcNow);
-			return dateTimeContextMock.Object;
+			return await Task.FromResult(new SystemClock());
 		}
 
-		protected internal virtual IRecaptchaSettings CreateSettings(RecaptchaModes mode)
+		protected internal virtual async Task<ISystemClock> CreateSystemClockAsync(DateTimeOffset utcNow)
 		{
-			var settingsMock = new Mock<IRecaptchaSettings>();
-			settingsMock.Setup(settings => settings.Mode).Returns(mode);
-			return settingsMock.Object;
+			var systemClockMock = new Mock<ISystemClock>();
+			systemClockMock.Setup(systemClock => systemClock.UtcNow).Returns(utcNow);
+			return await Task.FromResult(systemClockMock.Object);
 		}
 
 		[TestMethod]
-		public void ValidateAsync_IfSettingsModeIsEnabledOnClient_ShouldNotCallTheClient()
+		public async Task ValidateAsync_IfSettingsModeIsEnabledOnClient_ShouldNotCallTheClient()
 		{
 			var called = false;
 			var recaptchaValidationClientMock = new Mock<IRecaptchaValidationClient>();
 			recaptchaValidationClientMock.Setup(recaptchaValidationClient => recaptchaValidationClient.GetValidationResultAsync(It.IsAny<string>(), It.IsAny<string>())).Callback(() => { called = true; });
 
-			var validator = new RecaptchaValidator(Mock.Of<IDateTimeContext>(), this.CreateSettings(RecaptchaModes.EnabledOnClient), recaptchaValidationClientMock.Object);
+			var validator = new RecaptchaValidator(await this.CreateOptionsMonitorAsync(RecaptchaModes.EnabledOnClient), Mock.Of<ISystemClock>(), recaptchaValidationClientMock.Object);
 
-			validator.ValidateAsync(Mock.Of<IRecaptchaRequest>()).Wait();
+			await validator.ValidateAsync(Mock.Of<IRecaptchaRequest>());
 
 			Assert.IsFalse(called);
 		}
 
 		[TestMethod]
-		public void ValidateAsync_IfSettingsModeIsEnabledOnServer_ShouldCallTheClient()
+		public async Task ValidateAsync_IfSettingsModeIsEnabledOnServer_ShouldCallTheClient()
 		{
-			var utcNow = DateTime.UtcNow;
+			var utcNow = DateTimeOffset.UtcNow;
 
 			var called = false;
 			var recaptchaValidationClientMock = new Mock<IRecaptchaValidationClient>();
@@ -57,35 +72,35 @@ namespace UnitTests.Security.Captcha
 			{
 				var recaptchaValidationResultMock = new Mock<IRecaptchaValidationResult>();
 				recaptchaValidationResultMock.Setup(recaptchaValidationResult => recaptchaValidationResult.Success).Returns(true);
-				recaptchaValidationResultMock.Setup(recaptchaValidationResult => recaptchaValidationResult.Timestamp).Returns(utcNow);
+				recaptchaValidationResultMock.Setup(recaptchaValidationResult => recaptchaValidationResult.Timestamp).Returns(utcNow.UtcDateTime);
 
 				return Task.FromResult(recaptchaValidationResultMock.Object);
 			}).Callback(() => { called = true; });
 
-			var validator = new RecaptchaValidator(this.CreateDateTimeContext(utcNow), this.CreateSettings(RecaptchaModes.EnabledOnServer), recaptchaValidationClientMock.Object);
+			var validator = new RecaptchaValidator(await this.CreateOptionsMonitorAsync(RecaptchaModes.EnabledOnServer), await this.CreateSystemClockAsync(utcNow), recaptchaValidationClientMock.Object);
 
-			validator.ValidateAsync(Mock.Of<IRecaptchaRequest>()).Wait();
+			await validator.ValidateAsync(Mock.Of<IRecaptchaRequest>());
 
 			Assert.IsTrue(called);
 		}
 
 		[TestMethod]
-		public void ValidateAsync_IfSettingsModeIsNone_ShouldNotCallTheClient()
+		public async Task ValidateAsync_IfSettingsModeIsNone_ShouldNotCallTheClient()
 		{
 			var called = false;
 			var recaptchaValidationClientMock = new Mock<IRecaptchaValidationClient>();
 			recaptchaValidationClientMock.Setup(recaptchaValidationClient => recaptchaValidationClient.GetValidationResultAsync(It.IsAny<string>(), It.IsAny<string>())).Callback(() => { called = true; });
 
-			var validator = new RecaptchaValidator(Mock.Of<IDateTimeContext>(), this.CreateSettings(RecaptchaModes.None), recaptchaValidationClientMock.Object);
+			var validator = new RecaptchaValidator(await this.CreateOptionsMonitorAsync(RecaptchaModes.None), Mock.Of<ISystemClock>(), recaptchaValidationClientMock.Object);
 
-			validator.ValidateAsync(Mock.Of<IRecaptchaRequest>()).Wait();
+			await validator.ValidateAsync(Mock.Of<IRecaptchaRequest>());
 
 			Assert.IsFalse(called);
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(InvalidOperationException))]
-		public void ValidateAsync_IfTheValidationResultFromTheClientIsNotSuccessful_ShouldThrowAnInvalidOperationException()
+		public async Task ValidateAsync_IfTheValidationResultFromTheClientIsNotSuccessful_ShouldThrowAnInvalidOperationException()
 		{
 			var recaptchaValidationClientMock = new Mock<IRecaptchaValidationClient>();
 			recaptchaValidationClientMock.Setup(recaptchaValidationClient => recaptchaValidationClient.GetValidationResultAsync(It.IsAny<string>(), It.IsAny<string>())).Returns(() =>
@@ -96,11 +111,11 @@ namespace UnitTests.Security.Captcha
 				return Task.FromResult(recaptchaValidationResultMock.Object);
 			});
 
-			var validator = new RecaptchaValidator(Mock.Of<IDateTimeContext>(), this.CreateSettings(RecaptchaModes.EnabledOnServer), recaptchaValidationClientMock.Object);
+			var validator = new RecaptchaValidator(await this.CreateOptionsMonitorAsync(RecaptchaModes.EnabledOnServer), Mock.Of<ISystemClock>(), recaptchaValidationClientMock.Object);
 
 			try
 			{
-				validator.ValidateAsync(Mock.Of<IRecaptchaRequest>()).Wait();
+				await validator.ValidateAsync(Mock.Of<IRecaptchaRequest>());
 			}
 			catch(AggregateException aggregateException)
 			{

@@ -1,6 +1,7 @@
 using System;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RegionOrebroLan.Web.Paging;
 using RegionOrebroLan.Web.Paging.Extensions;
@@ -36,35 +37,37 @@ namespace IntegrationTests.Paging
 			NumberOfItems = 2 & PageSize = 5 => TotalNumberOfPages = 0,
 		*/
 
-		protected internal virtual Uri CreateUrl(int pageIndex)
+		protected internal virtual async Task<Uri> CreateUrlAsync(int pageIndex)
 		{
-			return this.CreateUrl(pageIndex.ToString(CultureInfo.InvariantCulture));
+			return await this.CreateUrlAsync(pageIndex.ToString(CultureInfo.InvariantCulture));
 		}
 
-		protected internal virtual Uri CreateUrl(string pageIndexValue)
+		protected internal virtual async Task<Uri> CreateUrlAsync(string pageIndexValue)
 		{
-			return new Uri("http://localhost/?" + this.PageIndexKey + "=" + pageIndexValue);
+			return await Task.FromResult(new Uri("http://localhost/?" + this.PageIndexKey + "=" + pageIndexValue));
 		}
 
 		[TestMethod]
-		public void FirstPageUrl_Test()
+		public async Task FirstPageUrl_Test()
 		{
-			var pagination = new Pagination(10, 436, this.PageIndexKey, 19, this.CreateUrl(-5), this.Validator, false);
+			var pagination = new Pagination(10, 436, this.PageIndexKey, 19, await this.CreateUrlAsync(-5), this.Validator, false);
 			Assert.IsNull(pagination.FirstPageUrl);
 
-			pagination = new Pagination(10, 436, this.PageIndexKey, 19, this.CreateUrl(0), this.Validator, false);
+			pagination = new Pagination(10, 436, this.PageIndexKey, 19, await this.CreateUrlAsync(0), this.Validator, false);
 			Assert.IsNull(pagination.FirstPageUrl);
 
-			pagination = new Pagination(10, 436, this.PageIndexKey, 19, this.CreateUrl(1), this.Validator, false);
+			pagination = new Pagination(10, 436, this.PageIndexKey, 19, await this.CreateUrlAsync(1), this.Validator, false);
 			Assert.IsNull(pagination.FirstPageUrl);
 
-			pagination = new Pagination(10, 436, this.PageIndexKey, 19, this.CreateUrl(2), this.Validator, false);
+			pagination = new Pagination(10, 436, this.PageIndexKey, 19, await this.CreateUrlAsync(2), this.Validator, false);
 			Assert.AreEqual(new Uri("http://localhost/?PageIndex=1"), pagination.FirstPageUrl);
 		}
 
 		[TestMethod]
-		public void LastPageUrl_Test()
+		public async Task LastPageUrl_Test()
 		{
+			await Task.CompletedTask;
+
 			var pagination = new Pagination(10, 1000, this.PageIndexKey, 10, this.DefaultUrl, this.Validator, false);
 			Assert.AreEqual(new Uri("http://localhost/?PageIndex=100"), pagination.LastPageUrl);
 
@@ -73,8 +76,10 @@ namespace IntegrationTests.Paging
 		}
 
 		[TestMethod]
-		public void NextPageGroupUrl_Test()
+		public async Task NextPageGroupUrl_Test()
 		{
+			await Task.CompletedTask;
+
 			var pagination = new Pagination(10, 1000, this.PageIndexKey, 10, this.DefaultUrl, this.Validator, false);
 			Assert.AreEqual(new Uri("http://localhost/?PageIndex=11"), pagination.NextPageGroupUrl);
 
@@ -83,7 +88,7 @@ namespace IntegrationTests.Paging
 		}
 
 		[TestMethod]
-		public void Pages_Test()
+		public async Task Pages_Test()
 		{
 			var pagination = new Pagination(10, 1000, this.PageIndexKey, 10, this.DefaultUrl, this.Validator, false);
 			var pages = pagination.Pages.ToArray();
@@ -99,28 +104,28 @@ namespace IntegrationTests.Paging
 			Assert.AreEqual(0, pages.ElementAt(0).Index);
 			Assert.AreEqual(9, pages.ElementAt(9).Index);
 
-			pagination = new Pagination(10, 1000, this.PageIndexKey, 10, this.CreateUrl(25), this.Validator, false);
+			pagination = new Pagination(10, 1000, this.PageIndexKey, 10, await this.CreateUrlAsync(25), this.Validator, false);
 			pages = pagination.Pages.ToArray();
 			Assert.AreEqual(10, pages.Length);
 			Assert.IsTrue(pages.ElementAt(4).Selected);
 			Assert.AreEqual(21, pages.ElementAt(0).Index);
 			Assert.AreEqual(30, pages.ElementAt(9).Index);
 
-			pagination = new Pagination(10, 1000, this.PageIndexKey, 10, this.CreateUrl(25), this.Validator, true);
+			pagination = new Pagination(10, 1000, this.PageIndexKey, 10, await this.CreateUrlAsync(25), this.Validator, true);
 			pages = pagination.Pages.ToArray();
 			Assert.AreEqual(10, pages.Length);
 			Assert.IsTrue(pages.ElementAt(5).Selected);
 			Assert.AreEqual(20, pages.ElementAt(0).Index);
 			Assert.AreEqual(29, pages.ElementAt(9).Index);
 
-			pagination = new Pagination(10, 1000, this.PageIndexKey, 10, this.CreateUrl(100), this.Validator, false);
+			pagination = new Pagination(10, 1000, this.PageIndexKey, 10, await this.CreateUrlAsync(100), this.Validator, false);
 			pages = pagination.Pages.ToArray();
 			Assert.AreEqual(10, pages.Length);
 			Assert.IsTrue(pages.ElementAt(9).Selected);
 			Assert.AreEqual(91, pages.ElementAt(0).Index);
 			Assert.AreEqual(100, pages.ElementAt(9).Index);
 
-			pagination = new Pagination(10, 1000, this.PageIndexKey, 10, this.CreateUrl(100), this.Validator, true);
+			pagination = new Pagination(10, 1000, this.PageIndexKey, 10, await this.CreateUrlAsync(100), this.Validator, true);
 			pages = pagination.Pages.ToArray();
 			Assert.AreEqual(10, pages.Length);
 			Assert.IsTrue(pages.ElementAt(9).Selected);
@@ -129,7 +134,7 @@ namespace IntegrationTests.Paging
 		}
 
 		[TestMethod]
-		public void PreviousPageGroupUrl_Test()
+		public async Task PreviousPageGroupUrl_Test()
 		{
 			var pagination = new Pagination(10, 1000, this.PageIndexKey, 10, this.DefaultUrl, this.Validator, false);
 			Assert.IsNull(pagination.PreviousPageGroupUrl);
@@ -137,23 +142,27 @@ namespace IntegrationTests.Paging
 			pagination = new Pagination(10, 1000, this.PageIndexKey, 10, this.DefaultUrl, this.Validator, true);
 			Assert.IsNull(pagination.PreviousPageGroupUrl);
 
-			pagination = new Pagination(10, 1000, this.PageIndexKey, 10, this.CreateUrl(35), this.Validator, false);
+			pagination = new Pagination(10, 1000, this.PageIndexKey, 10, await this.CreateUrlAsync(35), this.Validator, false);
 			Assert.AreEqual(new Uri("http://localhost/?PageIndex=30"), pagination.PreviousPageGroupUrl);
 
-			pagination = new Pagination(10, 1000, this.PageIndexKey, 10, this.CreateUrl(35), this.Validator, true);
+			pagination = new Pagination(10, 1000, this.PageIndexKey, 10, await this.CreateUrlAsync(35), this.Validator, true);
 			Assert.AreEqual(new Uri("http://localhost/?PageIndex=29"), pagination.PreviousPageGroupUrl);
 		}
 
 		[TestMethod]
-		public void SelectedPage_Test()
+		public async Task SelectedPage_Test()
 		{
+			await Task.CompletedTask;
+
 			var pagination = new Pagination(10, 1000, this.PageIndexKey, 10, this.DefaultUrl, this.Validator, false);
 			Assert.AreEqual(1, pagination.SelectedPage().Index);
 		}
 
 		[TestMethod]
-		public void Skip_Test()
+		public async Task Skip_Test()
 		{
+			await Task.CompletedTask;
+
 			var pagination = new Pagination(10, 1000, this.PageIndexKey, 10, this.DefaultUrl, this.Validator, false);
 			Assert.AreEqual(0, pagination.Skip);
 		}

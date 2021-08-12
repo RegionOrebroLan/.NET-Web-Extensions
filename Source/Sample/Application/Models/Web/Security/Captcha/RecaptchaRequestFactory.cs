@@ -2,18 +2,17 @@ using System;
 using System.Net;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
-using RegionOrebroLan.DependencyInjection;
 using RegionOrebroLan.Web.Security.Captcha;
+using RegionOrebroLan.Web.Security.Captcha.Configuration;
 
 namespace Application.Models.Web.Security.Captcha
 {
 	/// <inheritdoc />
-	[ServiceConfiguration(ServiceType = typeof(IRecaptchaRequestFactory))]
 	public class RecaptchaRequestFactory : IRecaptchaRequestFactory
 	{
 		#region Constructors
 
-		public RecaptchaRequestFactory(IHttpContextAccessor httpContextAccessor, IOptionsMonitor<RecaptchaSettings> optionsMonitor)
+		public RecaptchaRequestFactory(IHttpContextAccessor httpContextAccessor, IOptionsMonitor<RecaptchaOptions> optionsMonitor)
 		{
 			this.HttpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
 			this.OptionsMonitor = optionsMonitor ?? throw new ArgumentNullException(nameof(optionsMonitor));
@@ -24,7 +23,7 @@ namespace Application.Models.Web.Security.Captcha
 		#region Properties
 
 		protected internal virtual IHttpContextAccessor HttpContextAccessor { get; }
-		protected internal virtual IOptionsMonitor<RecaptchaSettings> OptionsMonitor { get; }
+		protected internal virtual IOptionsMonitor<RecaptchaOptions> OptionsMonitor { get; }
 
 		#endregion
 

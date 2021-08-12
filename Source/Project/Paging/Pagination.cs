@@ -1,14 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Web;
 using RegionOrebroLan.Web.Paging.Extensions;
 
 namespace RegionOrebroLan.Web.Paging
 {
-	[SuppressMessage("Design", "CA1031:Do not catch general exception types")]
 	public class Pagination : IPagination
 	{
 		#region Fields

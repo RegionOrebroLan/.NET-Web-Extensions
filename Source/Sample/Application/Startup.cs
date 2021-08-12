@@ -1,13 +1,15 @@
 using System;
+using Application.Models;
+using Application.Models.Web.Mvc.Filters;
+using Application.Models.Web.Security.Captcha;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using RegionOrebroLan.DependencyInjection;
-using RegionOrebroLan.DependencyInjection.Extensions;
+using RegionOrebroLan.Web.Paging.DependencyInjection.Extensions;
 using RegionOrebroLan.Web.Security.Captcha;
+using RegionOrebroLan.Web.Security.Captcha.DependencyInjection.Extensions;
 
 namespace Application
 {
@@ -50,20 +52,13 @@ namespace Application
 			if(services == null)
 				throw new ArgumentNullException(nameof(services));
 
-			services.Configure<RecaptchaSettings>(this.Configuration.GetSection("Recaptcha"));
-
-			services.AddTransient<IRecaptchaSettings>(serviceProvider => serviceProvider.GetRequiredService<IOptionsMonitor<RecaptchaSettings>>().CurrentValue);
-
-			var assembliesToScan = new[] { typeof(RegionOrebroLan.IDateTimeContext).Assembly, typeof(RegionOrebroLan.Web.Paging.IPagination).Assembly, this.GetType().Assembly };
-
-			foreach(var mapping in new ServiceConfigurationScanner().Scan(assembliesToScan))
-			{
-				services.Add(new ServiceDescriptor(mapping.Configuration.ServiceType, mapping.Type, mapping.Configuration.Lifetime));
-			}
-
-			services.AddHttpContextAccessor();
-
 			services.AddControllersWithViews();
+			services.AddHttpContextAccessor();
+			services.AddPaging();
+			services.AddRecaptcha(this.Configuration);
+			services.AddScoped<IRecaptcha, Recaptcha>();
+			services.AddSingleton<IRecaptchaRequestFactory, RecaptchaRequestFactory>();
+			services.AddSingleton<ValidateRecaptchaTokenFilter>();
 		}
 
 		#endregion
