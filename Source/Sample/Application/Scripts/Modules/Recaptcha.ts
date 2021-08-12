@@ -8,38 +8,20 @@ class RecaptchaOptions {
 	}
 }
 
-function logToConsole(message: string) {
-	console.log(message);
+function logDebugIfEnabled(message: string) {
+	console.log(`Debug: '${message}'`);
 }
 
-function enableFormsInternal(enabled: boolean, forms: HTMLFormElement[]): void {
+function disableFormElements(forms: HTMLFormElement[]): void {
 	const disabled = "disabled";
 	forms = forms ?? new Array<HTMLFormElement>();
 
 	forms.forEach((form) => {
 		form.querySelectorAll("button, fieldset, input, textarea").forEach((element) => {
 			element.removeAttribute(disabled);
-
-			if (!enabled)
-				element.setAttribute(disabled, disabled);
+			element.setAttribute(disabled, disabled);
 		});
 	});
-}
-
-function disableForms(forms: HTMLFormElement[]): void {
-	enableFormsInternal(false, forms);
-}
-
-function disableForm(form: HTMLFormElement) {
-	disableForms([form]);
-}
-
-function enableForms(forms: HTMLFormElement[]): void {
-	enableFormsInternal(true, forms);
-}
-
-function enableForm(form: HTMLFormElement) {
-	enableForms([form]);
 }
 
 function getRecaptchaForms(): HTMLFormElement[] {
@@ -58,7 +40,7 @@ function getRecaptchaOptions(): RecaptchaOptions {
 	const recaptchaScriptId = "recaptcha-script";
 	const recaptchaScript = document.querySelector(`script[id='${recaptchaScriptId}']`);
 	if (!recaptchaScript) {
-		logToConsole(`There is no script-tag with id '${recaptchaScriptId}'.`);
+		logDebugIfEnabled(`There is no script-tag with id '${recaptchaScriptId}'.`);
 		return null;
 	}
 
@@ -91,12 +73,21 @@ function getRecaptchaOptions(): RecaptchaOptions {
 	return new RecaptchaOptions(siteKey, tokenParameterName);
 }
 
+function insertRecaptchaInformation(form: HTMLFormElement, recaptchaBadge: HTMLElement) {
+	const recaptchaInformation = document.createElement("div");
+	recaptchaInformation.className = "mb-3";
+	recaptchaInformation.innerHTML = recaptchaBadge.firstElementChild.outerHTML;
+
+	const elementAfterRecaptchaInformation = form.querySelector("[data-element-after-recaptcha-information]") ?? form.querySelector("button[type='submit']");
+	elementAfterRecaptchaInformation.parentNode.insertBefore(recaptchaInformation, elementAfterRecaptchaInformation);
+}
+
 document.addEventListener("DOMContentLoaded", () => {
 	grecaptcha.ready(() => {
-		const grecaptchaBadge = document.querySelector<HTMLElement>(".grecaptcha-badge");
+		const recaptchaBadge = document.querySelector<HTMLElement>(".grecaptcha-badge");
 
-		if (grecaptchaBadge)
-			grecaptchaBadge.style.visibility = "hidden";
+		if (recaptchaBadge)
+			recaptchaBadge.style.visibility = "hidden";
 
 		const recaptchaForms = getRecaptchaForms();
 
@@ -104,35 +95,34 @@ document.addEventListener("DOMContentLoaded", () => {
 			const recaptchaOptions = getRecaptchaOptions();
 
 			recaptchaForms.forEach((form) => {
+				insertRecaptchaInformation(form, recaptchaBadge);
+
 				form.addEventListener("submit", (e) => {
 					e.preventDefault();
 
 					const anchorCharacter = "#";
 					let action = form.getAttribute("action");
-					logToConsole(`Recaptcha-form-action: ${action}`);
+					logDebugIfEnabled(`Recaptcha-form-action: ${action}`);
 					const actionParts = action.split(anchorCharacter);
 
 					if (actionParts.length > 1) {
 						actionParts.pop();
 						action = actionParts.join(anchorCharacter);
-						logToConsole(`Recaptcha-form-action without anchor: ${action}`);
+						logDebugIfEnabled(`Recaptcha-form-action without anchor: ${action}`);
 					}
 
 					const recaptchaAction = action.replace(/[^a-zA-Z_]/g, "_").substring(0, 100); // Only A-Z, a-z and _ are supported and a maximum length of 100.
-					logToConsole(`Recaptcha-action: ${recaptchaAction}`);
-
-					disableForm(form);
+					logDebugIfEnabled(`Recaptcha-action: ${recaptchaAction}`);
 
 					grecaptcha.execute(recaptchaOptions.siteKey, { action: recaptchaAction }).then(token => {
 						form.insertAdjacentHTML("afterbegin", `<input name="${recaptchaOptions.tokenParameterName}" type="hidden" value="${token}" />`);
-						enableForm(form);
 						form.submit();
 					});
 				});
 			});
 		}
 		catch (exception) {
-			disableForms(recaptchaForms);
+			disableFormElements(recaptchaForms);
 			alert(exception);
 		}
 	});
