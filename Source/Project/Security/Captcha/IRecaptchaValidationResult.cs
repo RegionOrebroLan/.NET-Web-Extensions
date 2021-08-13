@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace RegionOrebroLan.Web.Security.Captcha
@@ -13,7 +13,7 @@ namespace RegionOrebroLan.Web.Security.Captcha
 		IDictionary<string, object> Properties { get; }
 		decimal? Score { get; }
 		bool Success { get; }
-		DateTime? Timestamp { get; }
+		DateTimeOffset? Timestamp { get; }
 
 		#endregion
 	}

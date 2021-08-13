@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
@@ -27,7 +27,7 @@ namespace RegionOrebroLan.Web.Security.Captcha
 		public virtual bool Success { get; set; }
 
 		[JsonProperty("challenge_ts", Order = 5)]
-		public virtual DateTime? Timestamp { get; set; }
+		public virtual DateTimeOffset? Timestamp { get; set; }
 
 		#endregion
 	}

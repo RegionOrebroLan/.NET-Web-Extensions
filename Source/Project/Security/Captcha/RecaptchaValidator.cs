@@ -53,13 +53,16 @@ namespace RegionOrebroLan.Web.Security.Captcha
 			if(!string.Equals(request.Host, validationResult.Host, StringComparison.Ordinal))
 				errors.Add("The host is invalid.");
 
+			if(validationResult.Score == null)
+				errors.Add("The score is null.");
+
 			if(validationResult.Score < options.MinimumScore)
 				errors.Add("The score is below minimum.");
 
 			if(validationResult.Timestamp == null)
 				errors.Add("The timestamp is null.");
 
-			var timeElapsed = this.SystemClock.UtcNow.UtcDateTime - validationResult.Timestamp;
+			var timeElapsed = this.SystemClock.UtcNow - validationResult.Timestamp;
 
 			if(timeElapsed > options.MaximumTimestampElapse)
 				errors.Add("The timestamp has expired. Too much time elapsed.");
