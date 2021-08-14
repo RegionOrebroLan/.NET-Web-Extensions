@@ -34,7 +34,7 @@
 	async function buildScriptBundle() {
 		console.log("Building script-bundle...");
 
-		deleteIfExists(scriptsDestinationDirectory);
+		del(replaceBackSlashWithForwardSlash(path.join(scriptsDestinationDirectory, "**/*.js")));
 
 		var bundleName = "Site.js";
 
@@ -94,10 +94,18 @@
 	}
 
 	function clean(done) {
-		console.log(`Deleting directory "${scriptsDestinationDirectory}"...`);
-		console.log(`Deleting directory "${styleDestinationDirectory}"...`);
+		const excludePattern = ".gitkeep";
+		const pattern = "**/*";
 
-		del.sync([scriptsDestinationDirectory, styleDestinationDirectory]);
+		const scriptsExcludePattern = "!" + replaceBackSlashWithForwardSlash(path.join(scriptsDestinationDirectory, excludePattern));
+		const scriptsPattern = replaceBackSlashWithForwardSlash(path.join(scriptsDestinationDirectory, pattern));
+		console.log("Cleaning script-files...");
+		del.sync([scriptsPattern, scriptsExcludePattern]);
+
+		const styleExcludePattern = "!" + replaceBackSlashWithForwardSlash(path.join(styleDestinationDirectory, excludePattern));
+		const stylePattern = replaceBackSlashWithForwardSlash(path.join(styleDestinationDirectory, pattern));
+		console.log("Cleaning style-files...");
+		del.sync([stylePattern, styleExcludePattern]);
 
 		done();
 	};
@@ -107,7 +115,7 @@
 
 		deleteIfExists(imagesDestinationDirectory);
 
-		return gulp.src(path.join(imagesSourceDirectory, "**/*"))
+		return gulp.src([path.join(imagesSourceDirectory, "**/*"), `!${path.join(imagesSourceDirectory, "ReadMe.md")}`])
 			.pipe(gulp.dest(destinationRootDirectoryName));
 	}
 
