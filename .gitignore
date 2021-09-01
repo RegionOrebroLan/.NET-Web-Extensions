@@ -388,6 +388,8 @@ FodyWeavers.xsd
 *.sln.iml
 
 # Custom
+!nuget.config
+
 Source/.Global/Signing/*
 !Source/.Global/Signing/ReadMe.md
 !Source/.Global/Signing/StrongName.Development.snk
