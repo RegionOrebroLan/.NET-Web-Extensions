@@ -21,6 +21,7 @@ indent_style = space
 [*.cs]
 dotnet_analyzer_diagnostic.severity = error
 
+dotnet_diagnostic.IDE0003.severity = none
 dotnet_diagnostic.IDE0008.severity = none
 dotnet_diagnostic.IDE0011.severity = none
 dotnet_diagnostic.IDE0046.severity = none

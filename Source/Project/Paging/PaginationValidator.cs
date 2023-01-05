@@ -1,11 +1,9 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-using RegionOrebroLan.DependencyInjection;
 
 namespace RegionOrebroLan.Web.Paging
 {
-	[ServiceConfiguration(ServiceType = typeof(IPaginationValidator))]
 	public class PaginationValidator : IPaginationValidator
 	{
 		#region Methods

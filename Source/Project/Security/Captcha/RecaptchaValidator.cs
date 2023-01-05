@@ -5,13 +5,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Internal;
 using Microsoft.Extensions.Options;
-using RegionOrebroLan.DependencyInjection;
 using RegionOrebroLan.Web.Security.Captcha.Configuration;
 using RegionOrebroLan.Web.Security.Captcha.Configuration.Extensions;
 
 namespace RegionOrebroLan.Web.Security.Captcha
 {
-	[ServiceConfiguration(ServiceType = typeof(IRecaptchaValidator))]
 	public class RecaptchaValidator : IRecaptchaValidator
 	{
 		#region Constructors

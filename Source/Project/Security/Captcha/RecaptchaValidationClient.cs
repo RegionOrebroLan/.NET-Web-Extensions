@@ -6,12 +6,10 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using RegionOrebroLan.DependencyInjection;
 using RegionOrebroLan.Web.Security.Captcha.Configuration;
 
 namespace RegionOrebroLan.Web.Security.Captcha
 {
-	[ServiceConfiguration(ServiceType = typeof(IRecaptchaValidationClient))]
 	public class RecaptchaValidationClient : IRecaptchaValidationClient
 	{
 		#region Constructors
