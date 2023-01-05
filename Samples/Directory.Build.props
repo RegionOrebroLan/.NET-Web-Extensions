@@ -1,0 +1,5 @@
+<Project>
+	<PropertyGroup>
+		<CheckEolTargetFramework>False</CheckEolTargetFramework>
+	</PropertyGroup>
+</Project>

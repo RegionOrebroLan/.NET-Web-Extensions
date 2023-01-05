@@ -1,0 +1,8 @@
+<Project>
+	<Import Project="../Directory.Build.props" />
+	<PropertyGroup>
+		<AssemblyOriginatorKeyFile>$(SolutionDir)StrongName.Development.snk</AssemblyOriginatorKeyFile>
+		<DelaySign>false</DelaySign>
+		<SignAssembly>true</SignAssembly>
+	</PropertyGroup>
+</Project>

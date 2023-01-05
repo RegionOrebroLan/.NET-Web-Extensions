@@ -4,20 +4,28 @@ Additions and extensions for .NET web-applications, ASP.NET and ASP.NET Core.
 
 [![NuGet](https://img.shields.io/nuget/v/RegionOrebroLan.Web.svg?label=NuGet)](https://www.nuget.org/packages/RegionOrebroLan.Web)
 
-## 1 Paging/Pagination
+## 1 Development
 
-### 1.1 Source
+### 1.1 Signing
+
+Drop the "StrongName.snk" file in the repository-root. The file should not be included in source control.
+
+## 2 Features
+
+### 2.1 Paging/Pagination
+
+#### 2.1.1 Source
 - [RegionOrebroLan.Web.Paging.IPagination](/Source/Project/Paging/IPagination.cs)
 - [RegionOrebroLan.Web.Paging.Pagination](/Source/Project/Paging/Pagination.cs)
 - [RegionOrebroLan.Web.Paging.IPaginationFactory](/Source/Project/Paging/IPaginationFactory.cs)
 - [RegionOrebroLan.Web.Paging.PaginationFactory](/Source/Project/Paging/PaginationFactory.cs)
 
-### 1.2 Example
-- [Application.Controllers.ListController](/Source/Sample/Application/Controllers/ListController.cs)
-- [Application/Views/List/Index.cshtml](/Source/Sample/Application/Views/List/Index.cshtml)
-- [Application/Views/Shared/Pagination.cshtml](/Source/Sample/Application/Views/Shared/Pagination.cshtml)
+#### 2.1.2 Example
+- [Application.Controllers.ListController](/Samples/Application/Controllers/ListController.cs)
+- [Application/Views/List/Index.cshtml](/Samples/Application/Views/List/Index.cshtml)
+- [Application/Views/Shared/Pagination.cshtml](/Samples/Application/Views/Shared/Pagination.cshtml)
 
-### 1.3 Pagination.cshtml
+#### 2.1.3 Pagination.cshtml
 
     @model IPagination
     @if(Model != null && Model.Pages.Any())
@@ -126,20 +134,20 @@ Additions and extensions for .NET web-applications, ASP.NET and ASP.NET Core.
 	    </ul>
     }
 
-## 2 Recaptcha
+### 2.2 Recaptcha
 
 - [reCAPTCHA v3](https://developers.google.com/recaptcha/docs/v3/)
 - [reCAPTCHA demo](https://recaptcha-demo.appspot.com/)
 
-### 2.1 Source
+#### 2.2.1 Source
 
 - [RegionOrebroLan.Web.Security.Captcha](/Source/Project/Security/Captcha/)
 
-### 2.2 Example
+#### 2.2.2 Example
 
-- [Application.Business.Web.Mvc.Filters.ValidateRecaptchaTokenFilter](/Source/Sample/Application/Business/Web/Mvc/Filters/ValidateRecaptchaTokenFilter.cs)
-- [Application.Business.Web.Mvc.ValidateRecaptchaTokenAttribute](/Source/Sample/Application/Business/Web/Mvc/ValidateRecaptchaTokenAttribute.cs)
-- [Application.Controllers.RecaptchaController](/Source/Sample/Application/Controllers/RecaptchaController.cs)
-- [Application/Views/Recaptcha/Form.cshtml](/Source/Sample/Application/Views/Recaptcha/Form.cshtml)
-- [Application/Views/Recaptcha/Index.cshtml](/Source/Sample/Application/Views/Recaptcha/Index.cshtml)
-- [Application/Views/Shared/_Layout.cshtml](/Source/Sample/Application/Views/Shared/_Layout.cshtml#L47)
+- [Application.Business.Web.Mvc.Filters.ValidateRecaptchaTokenFilter](/Samples/Application/Business/Web/Mvc/Filters/ValidateRecaptchaTokenFilter.cs)
+- [Application.Business.Web.Mvc.ValidateRecaptchaTokenAttribute](/Samples/Application/Business/Web/Mvc/ValidateRecaptchaTokenAttribute.cs)
+- [Application.Controllers.RecaptchaController](/Samples/Application/Controllers/RecaptchaController.cs)
+- [Application/Views/Recaptcha/Form.cshtml](/Samples/Application/Views/Recaptcha/Form.cshtml)
+- [Application/Views/Recaptcha/Index.cshtml](/Samples/Application/Views/Recaptcha/Index.cshtml)
+- [Application/Views/Shared/_Layout.cshtml](/Samples/Application/Views/Shared/_Layout.cshtml#L47)
