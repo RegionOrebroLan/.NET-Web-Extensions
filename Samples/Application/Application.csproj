@@ -2,6 +2,7 @@
 	<PropertyGroup>
 		<CopyRefAssembliesToPublishDirectory>false</CopyRefAssembliesToPublishDirectory>
 		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+		<SuppressTfmSupportBuildWarnings>True</SuppressTfmSupportBuildWarnings>
 		<TargetFramework>net5.0</TargetFramework>
 		<TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
 		<UserSecretsId>f3abd2c5-2593-4840-8add-401d48f49fbd</UserSecretsId>

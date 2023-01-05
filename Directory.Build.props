@@ -9,6 +9,7 @@
 		<CheckEolTargetFramework>False</CheckEolTargetFramework>
 		<EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
 		<LangVersion>latest</LangVersion>
+		<SuppressTfmSupportBuildWarnings>True</SuppressTfmSupportBuildWarnings>
 		<TreatWarningsAsErrors>True</TreatWarningsAsErrors>
 	</PropertyGroup>
 </Project>
