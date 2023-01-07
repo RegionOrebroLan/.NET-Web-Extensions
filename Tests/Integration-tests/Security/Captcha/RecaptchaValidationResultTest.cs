@@ -12,26 +12,6 @@ namespace IntegrationTests.Security.Captcha
 		#region Methods
 
 		[TestMethod]
-		public async Task JsonSerialize_Test()
-		{
-			await Task.CompletedTask;
-
-			var recaptchaValidationResult = new RecaptchaValidationResult
-			{
-				Action = "Action",
-				Errors = new[] { "Error-code-1", "Error-code-2" },
-				Host = "host.com"
-			};
-
-			recaptchaValidationResult.Properties.Add("First-property", "First-property-value");
-			recaptchaValidationResult.Properties.Add("Second-property", "Second-property-value");
-
-			var value = JsonConvert.SerializeObject(recaptchaValidationResult, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-
-			Assert.AreEqual("{\"action\":\"Action\",\"error-codes\":[\"Error-code-1\",\"Error-code-2\"],\"hostname\":\"host.com\",\"success\":false,\"First-property\":\"First-property-value\",\"Second-property\":\"Second-property-value\"}", value);
-		}
-
-		[TestMethod]
 		public async Task JsonDeserialize_Test()
 		{
 			await Task.CompletedTask;
@@ -51,6 +31,26 @@ namespace IntegrationTests.Security.Captcha
 			Assert.AreEqual("First-property-value", recaptchaValidationResult.Properties.ElementAt(0).Value);
 			Assert.AreEqual("Second-property", recaptchaValidationResult.Properties.ElementAt(1).Key);
 			Assert.AreEqual("Second-property-value", recaptchaValidationResult.Properties.ElementAt(1).Value);
+		}
+
+		[TestMethod]
+		public async Task JsonSerialize_Test()
+		{
+			await Task.CompletedTask;
+
+			var recaptchaValidationResult = new RecaptchaValidationResult
+			{
+				Action = "Action",
+				Errors = new[] { "Error-code-1", "Error-code-2" },
+				Host = "host.com"
+			};
+
+			recaptchaValidationResult.Properties.Add("First-property", "First-property-value");
+			recaptchaValidationResult.Properties.Add("Second-property", "Second-property-value");
+
+			var value = JsonConvert.SerializeObject(recaptchaValidationResult, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+
+			Assert.AreEqual("{\"action\":\"Action\",\"error-codes\":[\"Error-code-1\",\"Error-code-2\"],\"hostname\":\"host.com\",\"success\":false,\"First-property\":\"First-property-value\",\"Second-property\":\"Second-property-value\"}", value);
 		}
 
 		#endregion
