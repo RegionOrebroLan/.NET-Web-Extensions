@@ -1,32 +1,47 @@
 using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace RegionOrebroLan.Web.Security.Captcha
 {
 	public class RecaptchaValidationResult : IRecaptchaValidationResult
 	{
+		#region Fields
+
+		private IList<string> _errors;
+		private IDictionary<string, object> _properties;
+
+		#endregion
+
 		#region Properties
 
-		[JsonProperty("action", Order = 0)]
+		[JsonPropertyName("action")]
 		public virtual string Action { get; set; }
 
-		[JsonProperty("error-codes", Order = 1)]
-		public virtual IEnumerable<string> Errors { get; set; }
+		[JsonPropertyName("error-codes")]
+		public virtual IList<string> Errors
+		{
+			get => this._errors ??= new List<string>();
+			set => this._errors = value;
+		}
 
-		[JsonProperty("hostname", Order = 2)]
+		[JsonPropertyName("hostname")]
 		public virtual string Host { get; set; }
 
 		[JsonExtensionData]
-		public virtual IDictionary<string, object> Properties { get; } = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+		public virtual IDictionary<string, object> Properties
+		{
+			get => this._properties ??= new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+			set => this._properties = value;
+		}
 
-		[JsonProperty("score", Order = 3)]
+		[JsonPropertyName("score")]
 		public virtual decimal? Score { get; set; }
 
-		[JsonProperty("success", Order = 4)]
+		[JsonPropertyName("success")]
 		public virtual bool Success { get; set; }
 
-		[JsonProperty("challenge_ts", Order = 5)]
+		[JsonPropertyName("challenge_ts")]
 		public virtual DateTimeOffset? Timestamp { get; set; }
 
 		#endregion

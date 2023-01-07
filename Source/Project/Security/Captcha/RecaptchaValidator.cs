@@ -102,7 +102,7 @@ namespace RegionOrebroLan.Web.Security.Captcha
 			if(validationResult == null)
 				throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, "Could not validate recaptcha for {0}. The validation-result is null.", argument));
 
-			var errors = (!validationResult.Success ? validationResult.Errors.Any() ? validationResult.Errors : new[] { "unsuccessful" } : this.GetValidationErrors(request, validationResult)).ToArray();
+			var errors = (!validationResult.Success ? validationResult.Errors != null && validationResult.Errors.Any() ? validationResult.Errors : new[] { "unsuccessful" } : this.GetValidationErrors(request, validationResult)).ToArray();
 
 			if(errors.Any())
 				throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, "Recaptcha-validation for {0} failed. Errors: {1}", argument, string.Join(", ", errors)));

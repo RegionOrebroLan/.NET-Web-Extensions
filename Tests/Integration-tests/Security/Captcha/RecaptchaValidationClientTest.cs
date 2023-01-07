@@ -33,7 +33,7 @@ namespace IntegrationTests.Security.Captcha
 
 				Assert.IsNotNull(result);
 				Assert.IsFalse(result.Success);
-				Assert.AreEqual(1, result.Errors.Count());
+				Assert.AreEqual(1, result.Errors.Count);
 				Assert.AreEqual("invalid-input-response", result.Errors.First());
 			}
 		}

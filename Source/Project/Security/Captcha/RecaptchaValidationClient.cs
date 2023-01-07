@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Net;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 using RegionOrebroLan.Web.Security.Captcha.Configuration;
 
 namespace RegionOrebroLan.Web.Security.Captcha
@@ -80,7 +80,7 @@ namespace RegionOrebroLan.Web.Security.Captcha
 
 		protected internal virtual IRecaptchaValidationResult ParseValidationResult(string content)
 		{
-			return JsonConvert.DeserializeObject<RecaptchaValidationResult>(content);
+			return JsonSerializer.Deserialize<RecaptchaValidationResult>(content);
 		}
 
 		#endregion

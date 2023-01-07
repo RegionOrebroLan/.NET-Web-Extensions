@@ -8,7 +8,7 @@ namespace RegionOrebroLan.Web.Security.Captcha
 		#region Properties
 
 		string Action { get; }
-		IEnumerable<string> Errors { get; }
+		IList<string> Errors { get; }
 		string Host { get; }
 		IDictionary<string, object> Properties { get; }
 		decimal? Score { get; }
