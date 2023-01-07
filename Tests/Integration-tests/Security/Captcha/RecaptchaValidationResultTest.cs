@@ -12,7 +12,7 @@ namespace IntegrationTests.Security.Captcha
 		#region Methods
 
 		[TestMethod]
-		public async Task JsonDeserialize_Test()
+		public async Task JsonSerialize_Test()
 		{
 			await Task.CompletedTask;
 
@@ -32,7 +32,7 @@ namespace IntegrationTests.Security.Captcha
 		}
 
 		[TestMethod]
-		public async Task JsonSerialize_Test()
+		public async Task JsonDeserialize_Test()
 		{
 			await Task.CompletedTask;
 
