@@ -145,9 +145,9 @@ Drop the "StrongName.snk" file in the repository-root. The file should not be in
 
 #### 2.2.2 Example
 
-- [Application.Business.Web.Mvc.Filters.ValidateRecaptchaTokenFilter](/Samples/Application/Business/Web/Mvc/Filters/ValidateRecaptchaTokenFilter.cs)
-- [Application.Business.Web.Mvc.ValidateRecaptchaTokenAttribute](/Samples/Application/Business/Web/Mvc/ValidateRecaptchaTokenAttribute.cs)
+- [Application.Business.Web.Mvc.Filters.ValidateRecaptchaTokenFilter](/Samples/Application/Models/Web/Mvc/Filters/ValidateRecaptchaTokenFilter.cs)
+- [Application.Business.Web.Mvc.ValidateRecaptchaTokenAttribute](/Samples/Application/Models/Web/Mvc/ValidateRecaptchaTokenAttribute.cs)
 - [Application.Controllers.RecaptchaController](/Samples/Application/Controllers/RecaptchaController.cs)
 - [Application/Views/Recaptcha/Form.cshtml](/Samples/Application/Views/Recaptcha/Form.cshtml)
 - [Application/Views/Recaptcha/Index.cshtml](/Samples/Application/Views/Recaptcha/Index.cshtml)
-- [Application/Views/Shared/_Layout.cshtml](/Samples/Application/Views/Shared/_Layout.cshtml#L47)
+- [Application/Views/Shared/_Layout.cshtml](/Samples/Application/Views/Shared/_Layout.cshtml#L38)
